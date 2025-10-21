@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import morgan from "morgan";
 import { connectDB } from "./config/db.js";
+import documentsRouter from "./routes/documents.js";
 
 // Cargar variables de entorno
 dotenv.config();
@@ -27,6 +28,9 @@ app.get("/api/health", (req, res) => {
     timestamp: new Date().toISOString()
   });
 });
+
+// Rutas de la API
+app.use("/api/documents", documentsRouter);
 
 // Aquí puedes agregar más rutas en el futuro
 // app.use("/api/users", userRoutes);

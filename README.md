@@ -1,10 +1,10 @@
-# 🚀 MERN Starter - Proyecto Base
+# 🚀 MERN Starter - Document Maker
 
-Plantilla limpia y lista para usar con **MongoDB + Express + React + Node.js**
+Aplicación MERN para crear y gestionar guías de despacho con **MongoDB + Express + React + Node.js**
 
 ---
 
-## 📋 ¿Qué incluye este starter?
+## 📋 ¿Qué incluye este proyecto?
 
 - ✅ **Backend**: Express + Mongoose (ES Modules)
 - ✅ **Frontend**: React + Vite
@@ -12,8 +12,8 @@ Plantilla limpia y lista para usar con **MongoDB + Express + React + Node.js**
 - ✅ **Proxy** de Vite para peticiones a `/api`
 - ✅ **Scripts unificados** con `concurrently`
 - ✅ **Health check** endpoint: `/api/health`
-- ✅ **Estructura preparada** para modelos, controladores y rutas
-- ❌ **Sin ejemplos de CRUD** (comienza desde cero)
+- ✅ **Document Maker**: Formulario completo para crear guías de despacho
+- ✅ **API REST**: Endpoints para crear y consultar documentos
 
 ---
 
@@ -302,7 +302,197 @@ app.use("/api/users", userRoutes);
 
 - **CORS** está configurado en el backend para permitir peticiones desde `http://localhost:5173`
 - **Proxy** en Vite redirige todas las peticiones a `/api/*` hacia `http://localhost:4000`
-- Esto significa que desde React puedes hacer `fetch("/api/users")` directamente
+- Esto significa que desde React puedes hacer `fetch("/api/documents")` directamente
+
+---
+
+## �️ Rutas del Frontend (React Router)
+
+El proyecto utiliza **React Router DOM** con las siguientes rutas:
+
+| Ruta | Componente | Descripción |
+|------|-----------|-------------|
+| `/` | Redirect → `/documents` | Página principal redirige al listado |
+| `/documents` | `DocumentsList` | Lista de todos los documentos con búsqueda, ordenamiento y paginación |
+| `/documents/new` | `DocumentMaker` | Formulario para crear nueva guía de despacho |
+| `/documents/:id` | `DocumentDetail` | Vista de detalle de un documento específico |
+
+### 🔗 Navegación
+
+- Desde el **listado** (`/documents`) puedes:
+  - Hacer clic en un **docNumber** para ver el detalle
+  - Usar el botón **"+ Crear Documento"** para ir al formulario
+  
+- Desde el **detalle** (`/documents/:id`) puedes:
+  - Usar el botón **"← Volver"** para regresar al listado
+  
+- Desde el **formulario** (`/documents/new`) puedes:
+  - Después de crear con éxito, serás redirigido al listado automáticamente
+
+---
+
+## �📄 Document Maker - Guías de Despacho
+
+### ✨ Características
+
+El proyecto incluye un **Document Maker** completo para crear guías de despacho con los siguientes campos:
+
+#### Información del Destinatario
+
+- **Destinatario** \* (requerido)
+- **RUT** \* (requerido)
+- **Dirección** \* (requerido)
+- **Ciudad** \* (requerido)
+- **Giro** (opcional)
+
+#### Información del Transporte
+
+- **Chofer** (opcional)
+- **RUT Chofer** (opcional)
+
+#### Información del Destino
+
+- **Destino** \* (requerido)
+- **Ciudad** \* (requerido)
+- **Centro de Negocios** (opcional)
+
+### 🌐 Endpoints de la API
+
+| Método | Endpoint             | Descripción                  |
+| ------ | -------------------- | ---------------------------- |
+| GET    | `/api/documents`     | Listar guías con paginación  |
+| POST   | `/api/documents`     | Crear nueva guía de despacho |
+| GET    | `/api/documents/:id` | Obtener guía por ID          |
+
+#### Parámetros de consulta para GET /api/documents
+
+- `page` - Número de página (default: 1)
+- `limit` - Documentos por página (default: 10)
+- `sort` - Ordenamiento (default: "-createdAt", opciones: "-docNumber", "docNumber", "-createdAt", "createdAt")
+- `q` - Búsqueda por destinatario o RUT (opcional)
+
+### 📝 Ejemplos de uso de la API
+
+**Listar documentos (básico):**
+
+```bash
+curl http://localhost:4000/api/documents
+```
+
+**Listar documentos con paginación:**
+
+```bash
+# Página 1, 10 resultados por página
+curl http://localhost:4000/api/documents?page=1&limit=10
+
+# Página 2, 5 resultados por página
+curl http://localhost:4000/api/documents?page=2&limit=5
+```
+
+**Listar documentos ordenados por número:**
+
+```bash
+# Orden descendente (más reciente primero)
+curl http://localhost:4000/api/documents?sort=-docNumber
+
+# Orden ascendente
+curl http://localhost:4000/api/documents?sort=docNumber
+```
+
+**Buscar documentos:**
+
+```bash
+# Buscar por destinatario o RUT
+curl "http://localhost:4000/api/documents?q=Sociedad%20Comercial"
+
+# Combinar búsqueda con paginación y ordenamiento
+curl "http://localhost:4000/api/documents?q=12.345&sort=-docNumber&page=1&limit=5"
+```
+
+**Crear un documento:**
+
+```bash
+curl -X POST http://localhost:4000/api/documents \
+  -H "Content-Type: application/json" \
+  -d '{
+    "destinatario": "Empresa ABC",
+    "rut": "12.345.678-9",
+    "direccion": "Av. Principal 123",
+    "ciudadDestinatario": "Santiago",
+    "giro": "Comercio",
+    "chofer": "Juan Pérez",
+    "rutChofer": "98.765.432-1",
+    "destino": "Bodega Central",
+    "ciudadDestino": "Valparaíso",
+    "centroDeNegocios": "Centro Logístico"
+  }'
+```
+
+**Obtener un documento:**
+
+```bash
+curl http://localhost:4000/api/documents/<ID>
+```
+
+### 🧪 Probar la Aplicación
+
+#### 📋 Ver listado de documentos
+
+1. Asegúrate de que MongoDB esté corriendo
+2. Ejecuta `npm run dev` desde la raíz del proyecto
+3. Abre http://localhost:5173 en tu navegador (redirige automáticamente a `/documents`)
+4. Verás el listado de documentos con:
+   - **Búsqueda**: Escribe en el campo de búsqueda para filtrar por destinatario o RUT
+   - **Ordenamiento**: Cambia el orden por número de documento o fecha de creación
+   - **Paginación**: Navega entre páginas con los botones Anterior/Siguiente
+   - **Límite**: Ajusta cuántos documentos ver por página (5, 10 o 20)
+
+#### ➕ Crear nuevo documento
+
+1. Desde el listado, haz clic en "➕ Nuevo Documento"
+2. Completa el formulario con los datos requeridos (*)
+3. Haz clic en "💾 Guardar Documento"
+4. Verás un mensaje de éxito con el ID y serás redirigido automáticamente
+
+#### 👁️ Ver detalle de un documento
+
+1. En el listado, haz clic en cualquier número de documento (columna "N°")
+2. Verás todos los detalles organizados por secciones:
+   - Información del destinatario
+   - Información del transporte (si aplica)
+   - Información del destino
+   - Metadata (ID, fechas de creación y actualización)
+
+### 🗄️ Ver documentos en MongoDB Compass
+
+1. Abre **MongoDB Compass**
+2. Conecta a: `mongodb://127.0.0.1:27017`
+3. Selecciona la base de datos: `mernstarter`
+4. Abre la colección: `documents`
+5. Verás todos los documentos guardados con sus timestamps
+
+### 📊 Estructura de un Documento en MongoDB
+
+```javascript
+{
+  "_id": "ObjectId(...)",
+  "docNumber": 1,                    // ✨ Número autoincremental único
+  "destinatario": "Empresa ABC",
+  "rut": "12.345.678-9",
+  "direccion": "Av. Principal 123",
+  "ciudadDestinatario": "Santiago",
+  "giro": "Comercio",
+  "chofer": "Juan Pérez",
+  "rutChofer": "98.765.432-1",
+  "destino": "Bodega Central",
+  "ciudadDestino": "Valparaíso",
+  "centroDeNegocios": "Centro Logístico",
+  "createdAt": "2025-10-21T...",
+  "updatedAt": "2025-10-21T..."
+}
+```
+
+**Nota:** El campo `docNumber` se asigna automáticamente al crear cada documento, comenzando desde 1 y aumentando de forma secuencial (1, 2, 3, ...). Es único e inmutable.
 
 ---
 
@@ -331,6 +521,12 @@ Verifica que en `server/src/index.js` el origin sea:
 cors({ origin: "http://localhost:5173" });
 ```
 
+### Error al guardar documentos
+
+- Verifica que MongoDB esté corriendo
+- Revisa que `MONGODB_URI` en `server/.env` sea correcta
+- Asegúrate de completar todos los campos requeridos (\*)
+
 ---
 
 ## 📄 Licencia
@@ -339,4 +535,4 @@ ISC
 
 ---
 
-**¡Tu proyecto MERN está listo! 🎉 Comienza a construir tu aplicación.**
+**¡Tu Document Maker está listo! 🎉 Crea tus guías de despacho de forma fácil y rápida.**
