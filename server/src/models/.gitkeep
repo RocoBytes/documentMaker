@@ -1,0 +1,3 @@
+# Esta carpeta está lista para tus modelos de Mongoose
+# Ejemplo:
+# export const User = mongoose.model("User", userSchema);

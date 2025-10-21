@@ -1,0 +1,4 @@
+# Esta carpeta está lista para tus rutas
+# Ejemplo:
+# router.get("/", getUsers);
+# export default router;

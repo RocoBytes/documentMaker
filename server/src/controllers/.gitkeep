@@ -1,0 +1,3 @@
+# Esta carpeta está lista para tus controladores
+# Ejemplo:
+# export const getUsers = async (req, res) => { ... }
