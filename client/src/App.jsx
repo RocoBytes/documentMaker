@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import DocumentMaker from "./pages/DocumentMaker";
 import DocumentsList from "./pages/DocumentsList";
 import DocumentDetail from "./pages/DocumentDetail";
+import DocumentPrint from "./pages/DocumentPrint";
 import LogoUpload from "./pages/LogoUpload";
 
 export default function App() {
@@ -19,6 +20,9 @@ export default function App() {
         
         {/* Ver detalle de un documento */}
         <Route path="/documents/:id" element={<DocumentDetail />} />
+        
+        {/* Vista de impresión especializada */}
+        <Route path="/documents/:id/print" element={<DocumentPrint />} />
         
         {/* Administrador de logo */}
         <Route path="/admin/logo" element={<LogoUpload />} />

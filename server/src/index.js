@@ -8,6 +8,7 @@ import fs from "fs";
 import { connectDB } from "./config/db.js";
 import documentsRouter from "./routes/documents.js";
 import assetsRouter from "./routes/assets.js";
+import settingsRouter from "./routes/settings.js";
 
 // Cargar variables de entorno
 dotenv.config();
@@ -40,9 +41,12 @@ app.use("/uploads", express.static(uploadsDir));
 
 // Ruta de health check
 app.get("/api/health", (req, res) => {
+  const dbStatus = app.locals.mongoose?.connection?.readyState === 1 ? "connected" : "disconnected";
   res.json({ 
     ok: true, 
     status: "healthy",
+    message: "Servidor activo y conectado a MongoDB Atlas",
+    database: dbStatus,
     timestamp: new Date().toISOString()
   });
 });
@@ -50,14 +54,17 @@ app.get("/api/health", (req, res) => {
 // Rutas de la API
 app.use("/api/documents", documentsRouter);
 app.use("/api/assets", assetsRouter);
+app.use("/api/settings", settingsRouter);
 
 // Aquí puedes agregar más rutas en el futuro
 // app.use("/api/users", userRoutes);
 // app.use("/api/products", productRoutes);
 
-// Conectar a MongoDB y arrancar servidor
+// Conectar a MongoDB Atlas y arrancar servidor
 connectDB().then(() => {
+  app.locals.mongoose = { connection: { readyState: 1 } };
   app.listen(PORT, () => {
     console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
+    console.log(`🔗 Health check: http://localhost:${PORT}/api/health`);
   });
 });

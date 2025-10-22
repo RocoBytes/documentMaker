@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import "../styles/print.css";
 
 /**
  * Formatea una fecha ISO a formato legible
@@ -89,9 +88,9 @@ export default function DocumentDetail() {
     return null;
   }
 
-  // Función para imprimir
+  // Función para navegar a vista de impresión
   const handlePrint = () => {
-    window.print();
+    navigate(`/documents/${id}/print?auto=1`);
   };
 
   return (
