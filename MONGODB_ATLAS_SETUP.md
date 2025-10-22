@@ -11,7 +11,7 @@ Tu proyecto MERN ya está configurado para conectarse a **MongoDB Atlas**.
 ### 1. `server/.env`
 
 ```env
-MONGODB_URI=mongodb+srv://root:CablexLatam2025@cablexlatam.uuzhzdx.mongodb.net/guiaDespacho
+MONGODB_URI=mongodb+srv://usuario:password@cablexlatam.uuzhzdx.mongodb.net/guiaDespacho
 PORT=4000
 ```
 
@@ -110,7 +110,7 @@ GET http://localhost:4000/api/health
 ### 2. Pegar la cadena de conexión completa:
 
 ```
-mongodb+srv://root:CablexLatam2025@cablexlatam.uuzhzdx.mongodb.net/guiaDespacho
+mongodb+srv://usuario:password@cablexlatam.uuzhzdx.mongodb.net/guiaDespacho
 ```
 
 ### 3. Hacer clic en **"Connect"**
@@ -145,10 +145,10 @@ mongodb+srv://root:CablexLatam2025@cablexlatam.uuzhzdx.mongodb.net/guiaDespacho
 **⚠️ IMPORTANTE:** Las credenciales están en el archivo `.env`:
 
 ```env
-Usuario: root
-Password: CablexLatam2025
-Cluster: cablexlatam.uuzhzdx.mongodb.net
-Base de datos: guiaDespacho
+Usuario: usuario
+Password: password
+Cluster: cluster
+Base de datos: db
 ```
 
 **🛡️ Seguridad:**
@@ -178,7 +178,7 @@ Si tenías datos en tu MongoDB local (`mongodb://127.0.0.1:27017`), puedes migra
 mongodump --uri="mongodb://127.0.0.1:27017/mernstarter" --out=./backup
 
 # Importar a Atlas
-mongorestore --uri="mongodb+srv://root:CablexLatam2025@cablexlatam.uuzhzdx.mongodb.net/guiaDespacho" ./backup/mernstarter
+mongorestore --uri="mongodb+srv://usuario:password@cablexlatam.uuzhzdx.mongodb.net/guiaDespacho" ./backup/mernstarter
 ```
 
 ---
@@ -241,5 +241,3 @@ npm run dev
 ---
 
 **🎉 ¡Listo! Tu aplicación MERN ahora usa MongoDB Atlas.**
-
-Tu backend está conectado a la nube y tu frontend puede seguir consumiendo las mismas APIs sin cambios.
