@@ -2,11 +2,19 @@ import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 import morgan from "morgan";
+import path from "path";
+import { fileURLToPath } from "url";
+import fs from "fs";
 import { connectDB } from "./config/db.js";
 import documentsRouter from "./routes/documents.js";
+import assetsRouter from "./routes/assets.js";
 
 // Cargar variables de entorno
 dotenv.config();
+
+// Obtener __dirname en ES Modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Crear aplicación Express
 const app = express();
@@ -20,6 +28,16 @@ app.use(cors({
 app.use(express.json());
 app.use(morgan("dev"));
 
+// Crear carpeta uploads si no existe
+const uploadsDir = path.join(__dirname, "..", "uploads");
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+  console.log("📁 Carpeta uploads creada:", uploadsDir);
+}
+
+// Servir archivos estáticos de uploads
+app.use("/uploads", express.static(uploadsDir));
+
 // Ruta de health check
 app.get("/api/health", (req, res) => {
   res.json({ 
@@ -31,6 +49,7 @@ app.get("/api/health", (req, res) => {
 
 // Rutas de la API
 app.use("/api/documents", documentsRouter);
+app.use("/api/assets", assetsRouter);
 
 // Aquí puedes agregar más rutas en el futuro
 // app.use("/api/users", userRoutes);

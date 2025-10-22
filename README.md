@@ -310,22 +310,20 @@ app.use("/api/users", userRoutes);
 
 El proyecto utiliza **React Router DOM** con las siguientes rutas:
 
-| Ruta | Componente | Descripción |
-|------|-----------|-------------|
-| `/` | Redirect → `/documents` | Página principal redirige al listado |
-| `/documents` | `DocumentsList` | Lista de todos los documentos con búsqueda, ordenamiento y paginación |
-| `/documents/new` | `DocumentMaker` | Formulario para crear nueva guía de despacho |
-| `/documents/:id` | `DocumentDetail` | Vista de detalle de un documento específico |
+| Ruta             | Componente              | Descripción                                                           |
+| ---------------- | ----------------------- | --------------------------------------------------------------------- |
+| `/`              | Redirect → `/documents` | Página principal redirige al listado                                  |
+| `/documents`     | `DocumentsList`         | Lista de todos los documentos con búsqueda, ordenamiento y paginación |
+| `/documents/new` | `DocumentMaker`         | Formulario para crear nueva guía de despacho                          |
+| `/documents/:id` | `DocumentDetail`        | Vista de detalle de un documento específico                           |
 
 ### 🔗 Navegación
 
 - Desde el **listado** (`/documents`) puedes:
   - Hacer clic en un **docNumber** para ver el detalle
   - Usar el botón **"+ Crear Documento"** para ir al formulario
-  
 - Desde el **detalle** (`/documents/:id`) puedes:
   - Usar el botón **"← Volver"** para regresar al listado
-  
 - Desde el **formulario** (`/documents/new`) puedes:
   - Después de crear con éxito, serás redirigido al listado automáticamente
 
@@ -450,7 +448,7 @@ curl http://localhost:4000/api/documents/<ID>
 #### ➕ Crear nuevo documento
 
 1. Desde el listado, haz clic en "➕ Nuevo Documento"
-2. Completa el formulario con los datos requeridos (*)
+2. Completa el formulario con los datos requeridos (\*)
 3. Haz clic en "💾 Guardar Documento"
 4. Verás un mensaje de éxito con el ID y serás redirigido automáticamente
 

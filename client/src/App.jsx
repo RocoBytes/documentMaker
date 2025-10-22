@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import DocumentMaker from "./pages/DocumentMaker";
 import DocumentsList from "./pages/DocumentsList";
 import DocumentDetail from "./pages/DocumentDetail";
+import LogoUpload from "./pages/LogoUpload";
 
 export default function App() {
   return (
@@ -18,6 +19,9 @@ export default function App() {
         
         {/* Ver detalle de un documento */}
         <Route path="/documents/:id" element={<DocumentDetail />} />
+        
+        {/* Administrador de logo */}
+        <Route path="/admin/logo" element={<LogoUpload />} />
         
         {/* Ruta 404 - redirige a /documents */}
         <Route path="*" element={<Navigate to="/documents" replace />} />

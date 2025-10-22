@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
+import "../styles/print.css";
 
 /**
  * Formatea una fecha ISO a formato legible
@@ -88,31 +89,57 @@ export default function DocumentDetail() {
     return null;
   }
 
+  // Función para imprimir
+  const handlePrint = () => {
+    window.print();
+  };
+
   return (
     <div style={styles.container}>
       <div style={styles.card}>
-        {/* Header */}
-        <div style={styles.header}>
-          <h1 style={styles.title}>
-            📄 Documento N° {document.docNumber}
-          </h1>
-          <div style={styles.headerActions}>
-            <button onClick={() => navigate(-1)} style={styles.backButton}>
-              ← Volver
-            </button>
-            <Link to="/documents" style={styles.listButton}>
-              📋 Ver listado
-            </Link>
-          </div>
+        {/* Botones de acción - No se imprimen */}
+        <div className="no-print" style={styles.actions}>
+          <button onClick={() => navigate(-1)} style={styles.backButton}>
+            ← Volver
+          </button>
+          <Link to="/documents" style={styles.listButton}>
+            📋 Ver listado
+          </Link>
+          <button onClick={handlePrint} style={styles.printButton}>
+            🖨️ Imprimir
+          </button>
         </div>
 
+        {/* Contenedor imprimible */}
+        <div className="print-container">
+          {/* Encabezado para impresión */}
+          <div className="print-header">
+            <img 
+              src="http://localhost:4000/uploads/logo.png" 
+              alt="Logo" 
+              className="print-logo"
+              onError={(e) => { e.target.style.display = 'none'; }}
+            />
+            <div className="print-company-info">
+              <h1 className="print-company-name">Cablex Latam SPA.</h1>
+              <p className="print-company-details">
+                RUT: 77.967.372-3 | Dirección: Av. Lo Espejo 01565 Oficina 1222 Calle 12 Sur<br />
+                Email:intercambio.cablexlatam@docele.cl
+              </p>
+            </div>
+            <div className="print-doc-number">
+              <div>GUÍA DE DESPACHO</div>
+              <div>N° {document.docNumber}</div>
+            </div>
+          </div>
+
         {/* Sección Destinatario */}
-        <section style={styles.section}>
-          <h2 style={styles.sectionTitle}>📍 Información del Destinatario</h2>
-          <div style={styles.grid}>
-            <div style={styles.field}>
-              <span style={styles.fieldLabel}>Destinatario:</span>
-              <span style={styles.fieldValue}>{document.destinatario}</span>
+        <section className="print-section" style={styles.section}>
+          <h2 className="print-section-title" style={styles.sectionTitle}>📍 Información del Destinatario</h2>
+          <div className="print-field-grid" style={styles.grid}>
+            <div className="print-field" style={styles.field}>
+              <span className="print-field-label" style={styles.fieldLabel}>Destinatario:</span>
+              <span className="print-field-value" style={styles.fieldValue}>{document.destinatario}</span>
             </div>
             <div style={styles.field}>
               <span style={styles.fieldLabel}>RUT:</span>
@@ -179,10 +206,10 @@ export default function DocumentDetail() {
 
         {/* Sección Documentos de Referencia */}
         {document.referencias && document.referencias.length > 0 && (
-          <section style={styles.section}>
-            <h2 style={styles.sectionTitle}>📋 Documentos de Referencia</h2>
+          <section className="print-section" style={styles.section}>
+            <h2 className="print-section-title" style={styles.sectionTitle}>📋 Documentos de Referencia</h2>
             <div style={styles.tableContainer}>
-              <table style={styles.table}>
+              <table className="print-table" style={styles.table}>
                 <thead>
                   <tr>
                     <th style={styles.th}>#</th>
@@ -219,8 +246,56 @@ export default function DocumentDetail() {
           </section>
         )}
 
+        {/* Sección Detalle (Items) */}
+        {document.items && document.items.length > 0 && (
+          <section className="print-section" style={styles.section}>
+            <h2 className="print-section-title" style={styles.sectionTitle}>📦 Detalle</h2>
+            <div style={styles.tableContainer}>
+              <table className="print-table" style={styles.table}>
+                <thead>
+                  <tr>
+                    <th style={styles.th}>#</th>
+                    <th style={styles.th}>Código ITEM</th>
+                    <th style={styles.th}>Detalle</th>
+                    <th style={styles.th}>Cantidad</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {document.items.map((item, index) => (
+                    <tr key={index} style={styles.tr}>
+                      <td style={styles.td}>{index + 1}</td>
+                      <td style={styles.td}>{item.codigoItem || "-"}</td>
+                      <td style={styles.td}>{item.detalle || "-"}</td>
+                      <td style={styles.td}>{item.cantidad}</td>
+                    </tr>
+                  ))}
+                  {/* Fila de Total */}
+                  <tr className="total-row" style={styles.totalRow}>
+                    <td colSpan="3" style={styles.totalCell}>
+                      <strong>Total cantidad:</strong>
+                    </td>
+                    <td style={styles.totalValueCell}>
+                      <strong>{document.totalCantidad || 0}</strong>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        )}
+
+        {/* Sección Observaciones */}
+        {document.observaciones && (
+          <section className="print-section" style={styles.section}>
+            <h2 className="print-section-title" style={styles.sectionTitle}>📝 Observaciones</h2>
+            <div className="print-observations" style={styles.observacionesBox}>
+              {document.observaciones}
+            </div>
+          </section>
+        )}
+
         {/* Metadata */}
-        <section style={styles.metadata}>
+        <section className="print-metadata" style={styles.metadata}>
           <div style={styles.metadataItem}>
             <span style={styles.metadataLabel}>🆔 ID:</span>
             <code style={styles.metadataValue}>{document._id}</code>
@@ -238,6 +313,8 @@ export default function DocumentDetail() {
             </span>
           </div>
         </section>
+        </div>
+        {/* Fin contenedor imprimible */}
       </div>
     </div>
   );
@@ -300,6 +377,24 @@ const styles = {
     fontWeight: "600",
     transition: "background-color 0.3s",
     display: "inline-block",
+  },
+  printButton: {
+    padding: "10px 20px",
+    backgroundColor: "#28a745",
+    color: "white",
+    border: "none",
+    borderRadius: "6px",
+    fontWeight: "600",
+    cursor: "pointer",
+    textDecoration: "none",
+    transition: "background-color 0.3s",
+  },
+  actions: {
+    display: "flex",
+    justifyContent: "flex-end",
+    gap: "10px",
+    marginBottom: "20px",
+    flexWrap: "wrap",
   },
   section: {
     marginBottom: "30px",
@@ -399,5 +494,31 @@ const styles = {
   td: {
     padding: "12px",
     color: "#333",
+  },
+  totalRow: {
+    borderTop: "2px solid #667eea",
+    backgroundColor: "#f0f0ff",
+  },
+  totalCell: {
+    padding: "12px",
+    textAlign: "right",
+    color: "#667eea",
+    fontSize: "1rem",
+  },
+  totalValueCell: {
+    padding: "12px",
+    textAlign: "center",
+    color: "#667eea",
+    fontSize: "1.1rem",
+  },
+  observacionesBox: {
+    padding: "15px",
+    backgroundColor: "#f8f9fa",
+    borderRadius: "8px",
+    border: "1px solid #dee2e6",
+    color: "#333",
+    fontSize: "1rem",
+    lineHeight: "1.6",
+    whiteSpace: "pre-wrap",
   },
 };

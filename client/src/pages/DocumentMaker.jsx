@@ -20,6 +20,15 @@ export default function DocumentMaker() {
     { documentoReferencia: "", nroDocto: "", fecha: "", nroSAP: "" }
   ]);
 
+  const [items, setItems] = useState([
+    { codigoItem: "", detalle: "", cantidad: 0 }
+  ]);
+
+  const [observaciones, setObservaciones] = useState("");
+
+  // Calcular total en tiempo real
+  const total = items.reduce((acc, item) => acc + (Number(item.cantidad) || 0), 0);
+
   const [status, setStatus] = useState({
     type: "", // 'success' | 'error' | ''
     message: "",
@@ -49,6 +58,28 @@ export default function DocumentMaker() {
     });
   };
 
+  // Manejar cambios en la tabla de items
+  const updateItem = (idx, field, value) => {
+    setItems(prev => {
+      const next = [...prev];
+      next[idx] = {
+        ...next[idx],
+        [field]: field === "cantidad" ? (value === "" ? 0 : Number(value)) : value
+      };
+      return next;
+    });
+  };
+
+  // Agregar fila de item
+  const addRow = () => {
+    setItems(prev => [...prev, { codigoItem: "", detalle: "", cantidad: 0 }]);
+  };
+
+  // Eliminar última fila de item (mantener al menos 1)
+  const removeRow = () => {
+    setItems(prev => prev.length > 1 ? prev.slice(0, -1) : prev);
+  };
+
   // Manejar envío del formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -63,7 +94,9 @@ export default function DocumentMaker() {
         },
         body: JSON.stringify({
           ...formData,
-          referencias
+          referencias,
+          items,
+          observaciones
         })
       });
 
@@ -96,6 +129,12 @@ export default function DocumentMaker() {
           { documentoReferencia: "", nroDocto: "", fecha: "", nroSAP: "" },
           { documentoReferencia: "", nroDocto: "", fecha: "", nroSAP: "" }
         ]);
+
+        setItems([
+          { codigoItem: "", detalle: "", cantidad: 0 }
+        ]);
+
+        setObservaciones("");
       } else {
         // Error del servidor
         setStatus({
@@ -382,6 +421,102 @@ export default function DocumentMaker() {
             </p>
           </fieldset>
 
+          {/* Sección Detalle (Items) */}
+          <fieldset style={styles.fieldset}>
+            <legend style={styles.legend}>📦 Detalle</legend>
+            
+            <div style={styles.itemsTableContainer}>
+              {/* Encabezados */}
+              <div style={styles.itemsGrid}>
+                <div style={styles.itemsHeaderCell}><strong>Código ITEM</strong></div>
+                <div style={styles.itemsHeaderCell}><strong>Detalle</strong></div>
+                <div style={styles.itemsHeaderCell}><strong>Cantidad</strong></div>
+                <div style={styles.itemsHeaderCell}><strong>Acciones</strong></div>
+              </div>
+
+              {/* Filas dinámicas */}
+              {items.map((item, idx) => (
+                <div key={idx} style={styles.itemsGrid}>
+                  <input
+                    type="text"
+                    value={item.codigoItem}
+                    onChange={(e) => updateItem(idx, "codigoItem", e.target.value)}
+                    placeholder="Ej: ITM-001"
+                    style={styles.itemInput}
+                  />
+                  <input
+                    type="text"
+                    value={item.detalle}
+                    onChange={(e) => updateItem(idx, "detalle", e.target.value)}
+                    placeholder="Descripción del ítem"
+                    style={styles.itemInput}
+                  />
+                  <input
+                    type="number"
+                    min="0"
+                    step="1"
+                    value={item.cantidad}
+                    onChange={(e) => updateItem(idx, "cantidad", e.target.value)}
+                    style={styles.itemInput}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (items.length > 1) {
+                        setItems(prev => prev.filter((_, i) => i !== idx));
+                      }
+                    }}
+                    disabled={items.length <= 1}
+                    style={{
+                      ...styles.deleteRowButton,
+                      opacity: items.length <= 1 ? 0.3 : 1,
+                      cursor: items.length <= 1 ? "not-allowed" : "pointer"
+                    }}
+                  >
+                    🗑️
+                  </button>
+                </div>
+              ))}
+
+              {/* Total */}
+              <div style={styles.totalRow}>
+                <div></div>
+                <div style={styles.totalLabel}><strong>Total cantidad:</strong></div>
+                <div style={styles.totalValue}><strong>{total}</strong></div>
+                <div></div>
+              </div>
+            </div>
+
+            {/* Botón agregar fila */}
+            <div style={styles.itemsActions}>
+              <button type="button" onClick={addRow} style={styles.addRowButton}>
+                ➕ Agregar fila
+              </button>
+              <button type="button" onClick={removeRow} style={styles.removeRowButton}>
+                ➖ Eliminar última
+              </button>
+            </div>
+          </fieldset>
+
+          {/* Sección Observaciones */}
+          <fieldset style={styles.fieldset}>
+            <legend style={styles.legend}>📝 Observaciones</legend>
+            
+            <div style={styles.formGroup}>
+              <label htmlFor="observaciones" style={styles.label}>
+                Notas adicionales
+              </label>
+              <textarea
+                id="observaciones"
+                value={observaciones}
+                onChange={(e) => setObservaciones(e.target.value)}
+                rows={4}
+                placeholder="Ingrese cualquier observación o nota adicional..."
+                style={styles.textarea}
+              />
+            </div>
+          </fieldset>
+
           {/* Botón de envío */}
           <button 
             type="submit" 
@@ -539,5 +674,103 @@ const styles = {
     marginBottom: "0",
     color: "#666",
     fontStyle: "italic"
+  },
+  itemsTableContainer: {
+    marginTop: "10px"
+  },
+  itemsGrid: {
+    display: "grid",
+    gridTemplateColumns: "1fr 4fr 1fr auto",
+    gap: "8px",
+    alignItems: "center",
+    marginBottom: "8px"
+  },
+  itemsHeaderCell: {
+    padding: "8px",
+    backgroundColor: "#f8f9fa",
+    borderBottom: "2px solid #dee2e6",
+    fontSize: "0.9rem",
+    color: "#555"
+  },
+  itemInput: {
+    width: "100%",
+    padding: "8px 10px",
+    fontSize: "0.95rem",
+    border: "1px solid #ddd",
+    borderRadius: "6px",
+    outline: "none",
+    fontFamily: "inherit",
+    boxSizing: "border-box"
+  },
+  deleteRowButton: {
+    padding: "8px 12px",
+    backgroundColor: "#dc3545",
+    color: "white",
+    border: "none",
+    borderRadius: "6px",
+    cursor: "pointer",
+    fontSize: "1rem",
+    transition: "background-color 0.3s"
+  },
+  totalRow: {
+    display: "grid",
+    gridTemplateColumns: "1fr 4fr 1fr auto",
+    gap: "8px",
+    alignItems: "center",
+    marginTop: "12px",
+    paddingTop: "12px",
+    borderTop: "2px solid #667eea"
+  },
+  totalLabel: {
+    textAlign: "right",
+    color: "#667eea",
+    fontSize: "1rem"
+  },
+  totalValue: {
+    textAlign: "center",
+    color: "#667eea",
+    fontSize: "1.2rem",
+    backgroundColor: "#f0f0ff",
+    padding: "8px",
+    borderRadius: "6px"
+  },
+  itemsActions: {
+    display: "flex",
+    gap: "10px",
+    marginTop: "15px"
+  },
+  addRowButton: {
+    padding: "10px 20px",
+    backgroundColor: "#28a745",
+    color: "white",
+    border: "none",
+    borderRadius: "6px",
+    cursor: "pointer",
+    fontWeight: "600",
+    fontSize: "0.95rem",
+    transition: "background-color 0.3s"
+  },
+  removeRowButton: {
+    padding: "10px 20px",
+    backgroundColor: "#6c757d",
+    color: "white",
+    border: "none",
+    borderRadius: "6px",
+    cursor: "pointer",
+    fontWeight: "600",
+    fontSize: "0.95rem",
+    transition: "background-color 0.3s"
+  },
+  textarea: {
+    width: "100%",
+    padding: "12px 16px",
+    fontSize: "1rem",
+    border: "2px solid #ddd",
+    borderRadius: "8px",
+    outline: "none",
+    fontFamily: "inherit",
+    resize: "vertical",
+    boxSizing: "border-box",
+    transition: "border-color 0.3s"
   }
 };

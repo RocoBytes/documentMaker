@@ -222,6 +222,8 @@ export default function DocumentsList() {
                     <th style={styles.th}>Destino</th>
                     <th style={styles.th}>Ciudad Destino</th>
                     <th style={styles.th}>Referencias</th>
+                    <th style={styles.th}>Ítems</th>
+                    <th style={styles.th}>Total Cant.</th>
                     <th style={styles.th}>Creado</th>
                   </tr>
                 </thead>
@@ -231,6 +233,9 @@ export default function DocumentsList() {
                     const refCount = (doc.referencias || []).filter(ref => 
                       ref.documentoReferencia || ref.nroDocto || ref.fecha || ref.nroSAP
                     ).length;
+
+                    // Contar ítems
+                    const itemsCount = (doc.items || []).length;
 
                     return (
                       <tr key={doc._id} style={styles.tr}>
@@ -252,6 +257,16 @@ export default function DocumentsList() {
                           ) : (
                             <span style={styles.noBadge}>-</span>
                           )}
+                        </td>
+                        <td style={styles.td}>
+                          {itemsCount > 0 ? (
+                            <span style={styles.badgeSecondary}>{itemsCount}</span>
+                          ) : (
+                            <span style={styles.noBadge}>-</span>
+                          )}
+                        </td>
+                        <td style={styles.td}>
+                          <span style={styles.totalBadge}>{doc.totalCantidad || 0}</span>
                         </td>
                         <td style={styles.td}>{formatDate(doc.createdAt)}</td>
                       </tr>
@@ -450,6 +465,24 @@ const styles = {
   badge: {
     display: "inline-block",
     backgroundColor: "#667eea",
+    color: "white",
+    padding: "4px 10px",
+    borderRadius: "12px",
+    fontSize: "0.85rem",
+    fontWeight: "600",
+  },
+  badgeSecondary: {
+    display: "inline-block",
+    backgroundColor: "#6c757d",
+    color: "white",
+    padding: "4px 10px",
+    borderRadius: "12px",
+    fontSize: "0.85rem",
+    fontWeight: "600",
+  },
+  totalBadge: {
+    display: "inline-block",
+    backgroundColor: "#28a745",
     color: "white",
     padding: "4px 10px",
     borderRadius: "12px",

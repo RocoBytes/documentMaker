@@ -76,7 +76,9 @@ export const createDocument = async (req, res) => {
         destino,
         ciudadDestino,
         centroDeNegocios,
-        referencias
+        referencias,
+        items,
+        observaciones
       } = req.body;
 
       // Validación de campos requeridos
@@ -119,7 +121,29 @@ export const createDocument = async (req, res) => {
         referenciasNormalizadas.push({});
       }
 
-      // Crear documento
+      // Normalizar items: convertir a array, filtrar vacíos y validar cantidades
+      let itemsNormalizados = Array.isArray(items) ? items : [];
+      
+      // Validar y normalizar cada item
+      itemsNormalizados = itemsNormalizados
+        .map(item => ({
+          codigoItem: String(item.codigoItem || "").trim(),
+          detalle: String(item.detalle || "").trim(),
+          cantidad: Number(item.cantidad) || 0
+        }))
+        .filter(item => {
+          // Validar que cantidad no sea negativa
+          if (item.cantidad < 0) {
+            throw new Error("Las cantidades no pueden ser negativas");
+          }
+          // Opcionalmente filtrar items completamente vacíos
+          return item.codigoItem || item.detalle || item.cantidad > 0;
+        });
+
+      // Normalizar observaciones
+      const observacionesNormalizadas = String(observaciones || "").trim();
+
+      // Crear documento (totalCantidad se calcula automáticamente en el hook pre-save)
       const document = await Document.create({
         destinatario,
         rut,
@@ -131,7 +155,9 @@ export const createDocument = async (req, res) => {
         destino,
         ciudadDestino,
         centroDeNegocios,
-        referencias: referenciasNormalizadas
+        referencias: referenciasNormalizadas,
+        items: itemsNormalizados,
+        observaciones: observacionesNormalizadas
       });
 
       return res.status(201).json(document);

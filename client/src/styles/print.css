@@ -1,0 +1,213 @@
+/* ========================================
+   ESTILOS DE IMPRESIÓN - @media print
+   Para generar PDFs limpios desde el navegador
+   ======================================== */
+
+@media print {
+  /* Configuración de página A4 */
+  @page {
+    size: A4;
+    margin: 12mm 15mm;
+  }
+
+  /* Reset general */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  /* Body */
+  body {
+    margin: 0;
+    padding: 0;
+    background: white;
+    font-family: 'Arial', 'Helvetica', sans-serif;
+    font-size: 11pt;
+    line-height: 1.5;
+    color: #000;
+  }
+
+  /* Ocultar elementos innecesarios */
+  .no-print,
+  button,
+  nav,
+  .navigation,
+  .sidebar,
+  .back-button,
+  .actions,
+  .print-button {
+    display: none !important;
+  }
+
+  /* Contenedor principal */
+  .print-container {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Encabezado con logo */
+  .print-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #333;
+  }
+
+  .print-logo {
+    max-width: 140px;
+    max-height: 80px;
+    height: auto;
+  }
+
+  .print-company-info {
+    text-align: left;
+    flex: 1;
+    margin-left: 20px;
+  }
+
+  .print-company-name {
+    font-size: 16pt;
+    font-weight: bold;
+    margin: 0 0 5px 0;
+    color: #000;
+  }
+
+  .print-company-details {
+    font-size: 10pt;
+    color: #333;
+    margin: 0;
+  }
+
+  .print-doc-number {
+    text-align: right;
+    font-size: 14pt;
+    font-weight: bold;
+    color: #000;
+  }
+
+  /* Secciones del documento */
+  .print-section {
+    margin-bottom: 15px;
+    page-break-inside: avoid;
+  }
+
+  .print-section-title {
+    font-size: 12pt;
+    font-weight: bold;
+    margin: 0 0 8px 0;
+    padding: 5px 0;
+    border-bottom: 1px solid #666;
+    color: #000;
+  }
+
+  .print-field-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px 15px;
+    margin-bottom: 10px;
+  }
+
+  .print-field {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .print-field-label {
+    font-size: 9pt;
+    font-weight: bold;
+    color: #555;
+    text-transform: uppercase;
+  }
+
+  .print-field-value {
+    font-size: 10pt;
+    color: #000;
+  }
+
+  /* Tablas */
+  .print-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0;
+    font-size: 10pt;
+  }
+
+  .print-table th {
+    background-color: #f0f0f0;
+    border: 1px solid #999;
+    padding: 6px 8px;
+    text-align: left;
+    font-weight: bold;
+    font-size: 9pt;
+  }
+
+  .print-table td {
+    border: 1px solid #ccc;
+    padding: 5px 8px;
+    font-size: 10pt;
+  }
+
+  .print-table tr.total-row {
+    font-weight: bold;
+    background-color: #f8f8f8;
+  }
+
+  .print-table tr.total-row td {
+    border-top: 2px solid #666;
+  }
+
+  /* Observaciones */
+  .print-observations {
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 10pt;
+    line-height: 1.6;
+    white-space: pre-wrap;
+  }
+
+  /* Metadata al final */
+  .print-metadata {
+    margin-top: 20px;
+    padding-top: 10px;
+    border-top: 1px dashed #999;
+    font-size: 8pt;
+    color: #666;
+  }
+
+  /* Evitar saltos de página indeseados */
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    page-break-inside: avoid;
+  }
+
+  table, figure {
+    page-break-inside: avoid;
+  }
+
+  /* Enlaces */
+  a {
+    text-decoration: none;
+    color: #000;
+  }
+
+  a[href]:after {
+    content: none;
+  }
+
+  /* Forzar impresión en blanco y negro si es necesario */
+  /* Descomenta si prefieres B&W puro */
+  /*
+  * {
+    color: #000 !important;
+    background: white !important;
+  }
+  */
+}
