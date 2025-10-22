@@ -13,8 +13,8 @@ npm run dev
 
 ```
 ✅ Conectado exitosamente a MongoDB Atlas
-📊 Base de datos: guiaDespacho
-🌐 Host: cablexlatam-shard-00-02.uuzhzdx.mongodb.net
+📊 Base de datos: 
+🌐 Host: 
 🚀 Servidor corriendo en http://localhost:4000
 ```
 
@@ -44,7 +44,6 @@ Debe responder:
 1. Abre **MongoDB Compass 1.47.1**
 2. Pega esta URI:
    ```
-   mongodb+srv://root:CablexLatam2025@cablexlatam.uuzhzdx.mongodb.net/guiaDespacho
    ```
 3. Haz clic en **"Connect"**
 4. Explora tu base de datos **guiaDespacho** y sus colecciones
