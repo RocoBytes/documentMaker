@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { getApiUrl } from "../config/api";
 
 export default function DocumentMaker() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     destinatario: "",
     rut: "",
@@ -104,38 +106,17 @@ export default function DocumentMaker() {
       const data = await response.json();
 
       if (response.ok) {
-        // Éxito
+        // Éxito - Mostrar mensaje breve y redirigir a vista de impresión
         setStatus({
           type: "success",
-          message: "✅ Documento guardado correctamente",
+          message: "✅ Documento guardado correctamente. Redirigiendo...",
           documentId: data._id
         });
 
-        // Limpiar formulario
-        setFormData({
-          destinatario: "",
-          rut: "",
-          direccion: "",
-          ciudadDestinatario: "",
-          giro: "",
-          chofer: "",
-          rutChofer: "",
-          destino: "",
-          ciudadDestino: "",
-          centroDeNegocios: ""
-        });
-
-        setReferencias([
-          { documentoReferencia: "", nroDocto: "", fecha: "", nroSAP: "" },
-          { documentoReferencia: "", nroDocto: "", fecha: "", nroSAP: "" },
-          { documentoReferencia: "", nroDocto: "", fecha: "", nroSAP: "" }
-        ]);
-
-        setItems([
-          { codigoItem: "", detalle: "", cantidad: 0 }
-        ]);
-
-        setObservaciones("");
+        // Redirigir a la vista de impresión después de 1 segundo
+        setTimeout(() => {
+          navigate(`/documents/${data._id}/print`);
+        }, 1000);
       } else {
         // Error del servidor
         setStatus({
