@@ -12,9 +12,10 @@ router.get("/company", (req, res) => {
     const companySettings = {
       name: process.env.COMPANY_NAME || "Cablex Latam SPA",
       rut: process.env.COMPANY_RUT || "77.967.372-3",
-      address: process.env.COMPANY_ADDRESS || "Av. Lo Espejo 1221",
+      address: process.env.COMPANY_ADDRESS || "Av. Lo Espejo 01565, Oficina 1222, Calle 12 Sur",
       city: process.env.COMPANY_CITY || "Santiago",
-      activity: process.env.COMPANY_ACTIVITY || "Servicios / Telecomunicaciones"
+      activity: process.env.COMPANY_ACTIVITY || "Ingeniería, Fabric. e Integración de Tableros Eléc. y Servicios para Telecom.",
+      email: process.env.COMPANY_EMAIL || "intercambio.cablexlatam@docele.cl"
     };
 
     res.json(companySettings);
