@@ -66,13 +66,15 @@ Environment: ✅ Production ✅ Preview ✅ Development
 ### 4️⃣ Verificar Backend
 
 Terminal:
+
 ```bash
 curl https://guia-despacho-backend.onrender.com/api/health
 ```
 
 Debe responder:
+
 ```json
-{"ok":true,"status":"healthy","database":"connected"}
+{ "ok": true, "status": "healthy", "database": "connected" }
 ```
 
 ---
@@ -80,6 +82,7 @@ Debe responder:
 ### 5️⃣ Probar Frontend
 
 Navegador:
+
 ```
 🔗 https://guia-despacho.vercel.app/documents
 
@@ -139,11 +142,13 @@ F12 → Console
 ## 🆘 Si Algo Sale Mal
 
 1. **Todavía hay error de CORS:**
+
    - Espera 5 minutos más
    - Limpia cache: Ctrl+Shift+R (Win) o Cmd+Shift+R (Mac)
    - Prueba en modo incógnito
 
 2. **Failed to fetch:**
+
    - Verifica que re-desplegaste Vercel SIN cache
    - Verifica que la variable tenga el nombre exacto: `VITE_API_ORIGIN`
 

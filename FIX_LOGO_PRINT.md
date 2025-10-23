@@ -28,6 +28,7 @@ img.company-logo {
 ```
 
 **Por qué era necesario:**
+
 - Las reglas de `@media print` ocultan TODO con `visibility: hidden !important`
 - Luego solo muestran `.print-root` y sus hijos
 - Las **imágenes necesitan reglas EXPLÍCITAS** para mostrarse en impresión
@@ -43,7 +44,7 @@ onLoad={() => {
   console.log("✅ Logo cargado exitosamente desde:", logoSrc);
   setLogoLoaded(true);
 }}
-onError={(e) => { 
+onError={(e) => {
   console.error("❌ Error al cargar logo desde:", logoSrc);
   console.error("Verifica que el archivo exista en el servidor");
   // Solo ocultar después de confirmar el error
@@ -60,11 +61,13 @@ onError={(e) => {
 ### Paso 1: Verificar que el logo esté disponible
 
 **En terminal:**
+
 ```bash
 curl -I http://localhost:4000/uploads/logo.png
 ```
 
 **Resultado esperado:**
+
 ```
 HTTP/1.1 200 OK
 ```
@@ -88,11 +91,13 @@ HTTP/1.1 200 OK
 **En la consola deberías ver:**
 
 ✅ **Si todo está bien:**
+
 ```
 ✅ Logo cargado exitosamente desde: http://localhost:4000/uploads/logo.png?v=1234567890
 ```
 
 ❌ **Si hay problema:**
+
 ```
 ❌ Error al cargar logo desde: http://localhost:4000/uploads/logo.png?v=1234567890
 Verifica que el archivo exista en el servidor
@@ -108,6 +113,7 @@ Verifica que el archivo exista en el servidor
 4. Verifica los estilos aplicados:
 
 **Debe tener:**
+
 ```css
 display: block !important;
 visibility: visible !important;
@@ -132,10 +138,12 @@ max-height: 60px !important;
 ### Problema 1: "Logo NO aparece en pantalla"
 
 **Diagnóstico:**
+
 - Abre consola (F12)
 - Busca mensaje de error del logo
 
 **Solución A: Logo no existe**
+
 ```bash
 # Verifica que existe
 ls -lh server/uploads/logo.png
@@ -145,6 +153,7 @@ cp /ruta/a/tu/logo.png server/uploads/logo.png
 ```
 
 **Solución B: Servidor no está corriendo**
+
 ```bash
 # En la carpeta server
 cd server
@@ -152,6 +161,7 @@ npm start
 ```
 
 **Solución C: CORS bloqueando**
+
 - Verifica que el backend acepte localhost:5173
 - Revisa la configuración CORS en `server/src/index.js`
 
@@ -164,16 +174,19 @@ npm start
 **Solución:**
 
 **Chrome/Edge:**
+
 1. Ctrl+P (Cmd+P en Mac)
 2. En "Más opciones" → Activa **"Gráficos de fondo"**
 3. La vista previa debe mostrar el logo
 
 **Firefox:**
+
 1. Ctrl+P (Cmd+P en Mac)
 2. Haz clic en "Opciones de página"
 3. Activa **"Imprimir fondos"**
 
 **Safari:**
+
 1. Cmd+P
 2. En el diálogo, busca "Imprimir fondos y colores"
 3. Activa la opción
@@ -201,6 +214,7 @@ Edita `client/src/styles/print.css`:
 **Causa:** `print-color-adjust` no aplicado
 
 **Verificación:**
+
 1. Inspeccionar elemento del logo
 2. Verificar que tenga:
    ```css
@@ -217,18 +231,21 @@ Edita `client/src/styles/print.css`:
 Completa cada paso:
 
 ### En Desarrollo
+
 - [ ] Logo existe en `server/uploads/logo.png`
 - [ ] Logo accesible: `curl -I http://localhost:4000/uploads/logo.png` → 200 OK
 - [ ] Servidor backend corriendo en puerto 4000
 - [ ] Frontend corriendo en puerto 5173
 
 ### En Vista de Impresión
+
 - [ ] Consola muestra: "✅ Logo cargado exitosamente"
 - [ ] NO hay errores en consola
 - [ ] Logo visible en la pantalla (esquina superior izquierda)
 - [ ] Inspeccionar elemento muestra `visibility: visible`
 
 ### En PDF
+
 - [ ] "Gráficos de fondo" activado en navegador
 - [ ] Vista previa muestra el logo
 - [ ] Logo en colores (no blanco y negro)
@@ -241,6 +258,7 @@ Completa cada paso:
 ### Si el logo ahora aparece en pantalla pero no en PDF:
 
 1. **Limpia la cache del navegador:**
+
    ```
    Ctrl + Shift + R (Windows/Linux)
    Cmd + Shift + R (Mac)
@@ -257,11 +275,13 @@ Completa cada paso:
 ### Si el logo TODAVÍA no aparece:
 
 1. **Toma capturas de pantalla:**
+
    - Vista de impresión sin logo
    - Consola del navegador (F12 → Console)
    - Elemento inspeccionado (F12 → Elements → img.company-logo)
 
 2. **Verifica estos archivos:**
+
    - `client/src/styles/print.css` (reglas de @media print)
    - `client/src/pages/DocumentPrint.jsx` (tag <img>)
    - `server/uploads/logo.png` (existe el archivo)
@@ -283,6 +303,7 @@ Completa cada paso:
 **Por qué el logo no aparecía antes:**
 
 1. Las reglas `@media print` ocultan TODO:
+
    ```css
    body * {
      visibility: hidden !important;
@@ -290,6 +311,7 @@ Completa cada paso:
    ```
 
 2. Luego solo muestran `.print-root`:
+
    ```css
    .print-root * {
      visibility: visible !important;

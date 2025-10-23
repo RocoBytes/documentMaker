@@ -3,9 +3,9 @@
 ## 🚨 Error Detectado
 
 ```
-Access to fetch at 'https://guia-despacho-backend.onrender.com/api/documents?page=1&limit=10&sort=-docNumber' 
-from origin 'https://guia-despacho.vercel.app' has been blocked by CORS policy: 
-The 'Access-Control-Allow-Origin' header has a value 'http://localhost:5173' 
+Access to fetch at 'https://guia-despacho-backend.onrender.com/api/documents?page=1&limit=10&sort=-docNumber'
+from origin 'https://guia-despacho.vercel.app' has been blocked by CORS policy:
+The 'Access-Control-Allow-Origin' header has a value 'http://localhost:5173'
 that is not equal to the supplied origin.
 ```
 
@@ -50,9 +50,10 @@ El backend en Render **NO** tiene configurada la variable de entorno `FRONTEND_U
 
 ### Paso 4: Re-desplegar el Servicio
 
-Render automáticamente re-desplegará tu servicio cuando agregues una variable de entorno nueva. 
+Render automáticamente re-desplegará tu servicio cuando agregues una variable de entorno nueva.
 
 **Puedes verificar el progreso:**
+
 1. Ve a la pestaña **"Logs"** o **"Events"**
 2. Espera a ver el mensaje: `Your service is live 🎉`
 3. Esto toma aproximadamente **2-3 minutos**
@@ -72,6 +73,7 @@ curl https://guia-despacho-backend.onrender.com/api/health
 ```
 
 Deberías ver:
+
 ```json
 {
   "ok": true,
@@ -96,11 +98,11 @@ Deberías ver:
 
 Después de completar los pasos, deberías tener estas variables configuradas:
 
-| Variable | Valor | Descripción |
-|----------|-------|-------------|
-| `NODE_ENV` | `production` | Entorno de ejecución |
-| `PORT` | `4000` | Puerto del servidor |
-| `MONGODB_URI` | `mongodb+srv://usuario:...` | Conexión a MongoDB Atlas |
+| Variable       | Valor                              | Descripción                |
+| -------------- | ---------------------------------- | -------------------------- |
+| `NODE_ENV`     | `production`                       | Entorno de ejecución       |
+| `PORT`         | `4000`                             | Puerto del servidor        |
+| `MONGODB_URI`  | `mongodb+srv://usuario:...`        | Conexión a MongoDB Atlas   |
 | `FRONTEND_URL` | `https://guia-despacho.vercel.app` | URL del frontend para CORS |
 
 ---
@@ -113,13 +115,14 @@ El código en `server/src/index.js` acepta requests de estos orígenes:
 
 ```javascript
 const allowedOrigins = [
-  "http://localhost:5173",      // Desarrollo local
-  "http://localhost:5174",      // Desarrollo alternativo
-  process.env.FRONTEND_URL      // Producción (Vercel)
+  "http://localhost:5173", // Desarrollo local
+  "http://localhost:5174", // Desarrollo alternativo
+  process.env.FRONTEND_URL, // Producción (Vercel)
 ];
 ```
 
 Cuando el usuario accede desde:
+
 - **Localhost** → ✅ Permitido (desarrollo)
 - **Vercel** → ✅ Permitido (producción con FRONTEND_URL configurado)
 - **Otro dominio** → ❌ Bloqueado por CORS
@@ -131,6 +134,7 @@ Cuando el usuario accede desde:
 ### Error 1: "Still seeing CORS error after adding variable"
 
 **Solución:**
+
 1. Verifica que la variable `FRONTEND_URL` esté escrita exactamente igual (mayúsculas/minúsculas)
 2. Verifica que la URL **NO** tenga `/` al final
 3. Espera a que el re-despliegue termine completamente (2-3 minutos)
@@ -141,6 +145,7 @@ Cuando el usuario accede desde:
 ### Error 2: "Service won't start after adding variable"
 
 **Solución:**
+
 1. Ve a la pestaña **"Logs"** en Render
 2. Busca mensajes de error en rojo
 3. Si ves errores de MongoDB, verifica la variable `MONGODB_URI`
@@ -151,6 +156,7 @@ Cuando el usuario accede desde:
 ### Error 3: "Cannot read environment variables"
 
 **Solución:**
+
 1. Verifica que el archivo `server/src/index.js` tenga esta línea al inicio:
    ```javascript
    dotenv.config();

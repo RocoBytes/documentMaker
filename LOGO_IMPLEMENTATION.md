@@ -5,6 +5,7 @@
 ### 1. ✅ Logo Agregado al Repositorio
 
 El logo ahora está incluido en Git y se desplegará automáticamente en Render:
+
 ```
 server/uploads/logo.png → Subido a GitHub
 ```
@@ -25,6 +26,7 @@ server/uploads/logo.png → Subido a GitHub
 ```
 
 **Esto asegura:**
+
 - Logo visible en impresión y PDF
 - Colores exactos (no blanco y negro)
 - Tamaño apropiado
@@ -35,12 +37,12 @@ server/uploads/logo.png → Subido a GitHub
 `client/src/pages/DocumentPrint.jsx` ahora tiene mejor manejo del logo:
 
 ```jsx
-<img 
-  src={logoSrc} 
-  alt="Logo empresa" 
+<img
+  src={logoSrc}
+  alt="Logo empresa"
   className="company-logo"
   onLoad={() => setLogoLoaded(true)}
-  onError={(e) => { 
+  onError={(e) => {
     console.warn("⚠️ Logo no pudo cargarse");
     e.currentTarget.style.visibility = "hidden";
   }}
@@ -48,6 +50,7 @@ server/uploads/logo.png → Subido a GitHub
 ```
 
 **Beneficios:**
+
 - No rompe el layout si el logo falla
 - Logs útiles en consola para debugging
 - Manejo elegante de errores
@@ -55,6 +58,7 @@ server/uploads/logo.png → Subido a GitHub
 ### 4. ✅ Documentación Actualizada
 
 Se actualizó `LOGO_SETUP.md` con:
+
 - Instrucciones de verificación
 - Guía de solución de problemas
 - Checklist de testing
@@ -69,6 +73,7 @@ Se actualizó `LOGO_SETUP.md` con:
 Render detectará el push automáticamente y re-desplegará el backend con el logo.
 
 **Puedes monitorear el progreso:**
+
 1. Ve a: https://dashboard.render.com
 2. Selecciona: guia-despacho-backend
 3. Pestaña: "Logs" o "Events"
@@ -87,6 +92,7 @@ https://guia-despacho-backend.onrender.com/uploads/logo.png
 ```
 
 **Resultado esperado:**
+
 - ✅ Se ve tu logo de empresa
 - ❌ Si da 404, espera unos minutos más
 
@@ -119,15 +125,18 @@ https://guia-despacho-backend.onrender.com/uploads/logo.png
 Completa después del re-despliegue:
 
 ### Backend (Render)
+
 - [ ] Re-despliegue completado (logs: "Your service is live 🎉")
 - [ ] Logo accesible: `https://guia-despacho-backend.onrender.com/uploads/logo.png`
 
 ### Frontend (Vercel)
+
 - [ ] Logo aparece en vista de impresión
 - [ ] Logo aparece en PDF generado
 - [ ] No hay errores en consola del navegador (F12)
 
 ### Impresión
+
 - [ ] Logo visible en vista previa de impresión
 - [ ] Logo con colores correctos
 - [ ] Logo bien alineado con información de empresa
@@ -147,11 +156,13 @@ Completa después del re-despliegue:
 ### Método 2: Via Git
 
 1. Reemplaza el archivo localmente:
+
    ```bash
    cp /ruta/nuevo-logo.png server/uploads/logo.png
    ```
 
 2. Commit y push:
+
    ```bash
    git add server/uploads/logo.png
    git commit -m "Actualizar logo de empresa"
@@ -167,6 +178,7 @@ Completa después del re-despliegue:
 ### 1. Verifica la URL del Logo
 
 Abre en tu navegador:
+
 ```
 https://guia-despacho-backend.onrender.com/uploads/logo.png
 ```
@@ -191,6 +203,7 @@ https://guia-despacho-backend.onrender.com/uploads/logo.png
 Si ves errores de CORS en consola:
 
 1. Verifica que `FRONTEND_URL` esté configurado en Render:
+
    - Dashboard → guia-despacho-backend → Environment
    - Debe tener: `FRONTEND_URL=https://guia-despacho.vercel.app`
 
@@ -216,10 +229,12 @@ O prueba en modo incógnito.
 Si después de todo el logo aún no aparece:
 
 1. **Verifica los logs de Render:**
+
    - Dashboard → guia-despacho-backend → Logs
    - Busca errores en rojo
 
 2. **Toma capturas de pantalla:**
+
    - Vista de impresión sin logo
    - Consola del navegador (F12)
    - Respuesta al abrir URL del logo

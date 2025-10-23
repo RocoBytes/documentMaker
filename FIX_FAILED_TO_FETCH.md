@@ -1,6 +1,7 @@
 # 🔧 Solución: Error "Failed to fetch" en Vercel
 
 ## ❌ Error
+
 ```
 ❌ Error: Failed to fetch
 ```
@@ -38,8 +39,8 @@ Si **NO existe** o tiene un valor incorrecto:
    https://guia-despacho-backend.onrender.com
    ```
    ⚠️ **SIN barra diagonal al final**
-   
 4. **Environment:** Seleccionar todas
+
    - ✅ Production
    - ✅ Preview
    - ✅ Development
@@ -51,6 +52,7 @@ Si **NO existe** o tiene un valor incorrecto:
 Después de guardar la variable:
 
 **Opción A: Redeploy desde Dashboard**
+
 1. Ir a: **Deployments**
 2. Click en el último deployment
 3. Click en **"Redeploy"** (botón con 3 puntos)
@@ -58,6 +60,7 @@ Después de guardar la variable:
 5. Click **"Redeploy"**
 
 **Opción B: Redeploy desde Git**
+
 ```bash
 # Hacer un cambio mínimo para forzar redeploy
 git commit --allow-empty -m "Trigger Vercel redeploy"
@@ -81,13 +84,14 @@ git push origin main
 3. Ir a la pestaña **Console**
 4. Escribir:
    ```javascript
-   console.log(import.meta.env.VITE_API_ORIGIN)
+   console.log(import.meta.env.VITE_API_ORIGIN);
    ```
 5. Debe mostrar:
+
    ```
    "https://guia-despacho-backend.onrender.com"
    ```
-   
+
    Si muestra `undefined` → La variable NO está configurada
 
 ### Paso 2: Verificar Peticiones
@@ -96,14 +100,17 @@ git push origin main
 2. Filtrar por **Fetch/XHR**
 3. Ir a: https://guia-despacho.vercel.app/documents
 4. Las peticiones deben ir a:
+
    ```
    ✅ https://guia-despacho-backend.onrender.com/api/documents
    ```
-   
+
    Si van a:
+
    ```
    ❌ https://guia-despacho.vercel.app/api/documents
    ```
+
    → La variable NO está funcionando
 
 ### Paso 3: Verificar Respuesta
@@ -165,19 +172,23 @@ Si responde, el backend está activo.
 ## 🐛 Errores Comunes
 
 ### Error: Variable con barra diagonal
+
 ```
 ❌ https://guia-despacho-backend.onrender.com/
 ✅ https://guia-despacho-backend.onrender.com
 ```
 
 ### Error: Protocolo incorrecto
+
 ```
 ❌ http://guia-despacho-backend.onrender.com
 ✅ https://guia-despacho-backend.onrender.com
 ```
 
 ### Error: URL incorrecta
+
 Verifica la URL real de tu backend en Render:
+
 1. Ir a: https://dashboard.render.com/
 2. Click en tu servicio
 3. Copiar la URL que aparece arriba
@@ -187,6 +198,7 @@ Verifica la URL real de tu backend en Render:
 ## 💡 Cómo Verificar la URL Correcta de tu Backend
 
 ### En Render Dashboard:
+
 ```
 1. Ir a: https://dashboard.render.com/
 2. Click en: guia-despacho-backend
@@ -195,11 +207,13 @@ Verifica la URL real de tu backend en Render:
 ```
 
 ### Probar la URL:
+
 ```bash
 curl https://TU-URL-BACKEND.onrender.com/api/health
 ```
 
 Debe responder:
+
 ```json
 {
   "ok": true,
@@ -225,6 +239,7 @@ Después de aplicar la solución:
 ## 📸 Screenshots de Referencia
 
 ### Variables de Entorno en Vercel:
+
 ```
 ┌─────────────────┬──────────────────────────────────────────┐
 │ Name            │ Value                                    │
@@ -235,12 +250,14 @@ Después de aplicar la solución:
 ```
 
 ### Console debe mostrar:
+
 ```javascript
 > import.meta.env.VITE_API_ORIGIN
 < "https://guia-despacho-backend.onrender.com"
 ```
 
 ### Network tab debe mostrar:
+
 ```
 Name: documents?page=1&limit=10&sort=-docNumber
 URL: https://guia-despacho-backend.onrender.com/api/documents?...
@@ -253,6 +270,7 @@ Type: xhr
 ## 🆘 Si Nada Funciona
 
 ### Opción 1: Verificar Logs en Vercel
+
 ```
 1. Ir a: Vercel Dashboard → Tu proyecto
 2. Click en: Deployments → Latest deployment
@@ -262,6 +280,7 @@ Type: xhr
 ```
 
 ### Opción 2: Verificar Logs en Render
+
 ```
 1. Ir a: Render Dashboard → Tu servicio
 2. Click en: Logs
@@ -270,6 +289,7 @@ Type: xhr
 ```
 
 ### Opción 3: Contactar Soporte
+
 - Vercel: https://vercel.com/support
 - Render: https://render.com/docs/support
 
@@ -280,6 +300,7 @@ Type: xhr
 **Problema:** `VITE_API_ORIGIN` no está configurada en Vercel
 
 **Solución:**
+
 1. Agregar variable en Vercel
 2. Redeploy
 3. Verificar en console del navegador

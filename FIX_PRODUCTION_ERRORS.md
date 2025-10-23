@@ -4,13 +4,14 @@
 
 Estás viendo estos errores en producción:
 
-1. **Error de CORS**: 
+1. **Error de CORS**:
+
    ```
-   Access to fetch at 'https://guia-despacho-backend.onrender.com/api/documents...' 
+   Access to fetch at 'https://guia-despacho-backend.onrender.com/api/documents...'
    from origin 'https://guia-despacho.vercel.app' has been blocked by CORS policy
    ```
 
-2. **Failed to load resource**: 
+2. **Failed to load resource**:
    ```
    net::ERR_FAILED
    ```
@@ -88,6 +89,7 @@ Render automáticamente re-desplegará el servicio (2-3 minutos):
 Después de agregar la variable, debes re-desplegar:
 
 **Opción A: Re-despliegue Manual (Recomendado)**
+
 1. Ve a la pestaña **"Deployments"**
 2. Busca el último deployment (el más reciente)
 3. Haz clic en el botón **"⋯"** (tres puntos)
@@ -97,6 +99,7 @@ Después de agregar la variable, debes re-desplegar:
 7. Espera 2-3 minutos a que termine
 
 **Opción B: Re-despliegue con Git Push**
+
 ```bash
 cd client
 git commit --allow-empty -m "Trigger redeploy for env vars"
@@ -116,6 +119,7 @@ curl https://guia-despacho-backend.onrender.com/api/health
 ```
 
 **Resultado esperado:**
+
 ```json
 {
   "ok": true,
@@ -138,7 +142,7 @@ Después de re-desplegar Vercel:
 2. Abre la **Consola del Navegador** (F12 → Console)
 3. Escribe y ejecuta:
    ```javascript
-   window.location.href = '/test.html'
+   window.location.href = "/test.html";
    ```
 4. En la consola, deberías ver errores de CORS (esto es temporal)
 5. Ve a: Settings → Environment Variables en Vercel
@@ -164,17 +168,17 @@ Después de completar todos los pasos:
 
 ### Backend (Render)
 
-| Variable | Valor | Status |
-|----------|-------|--------|
-| `NODE_ENV` | `production` | ✅ |
-| `PORT` | `4000` | ✅ |
-| `MONGODB_URI` | `mongodb+srv://...` | ✅ |
+| Variable           | Valor                                  | Status       |
+| ------------------ | -------------------------------------- | ------------ |
+| `NODE_ENV`         | `production`                           | ✅           |
+| `PORT`             | `4000`                                 | ✅           |
+| `MONGODB_URI`      | `mongodb+srv://...`                    | ✅           |
 | **`FRONTEND_URL`** | **`https://guia-despacho.vercel.app`** | ✅ **NUEVO** |
 
 ### Frontend (Vercel)
 
-| Variable | Valor | Status |
-|----------|-------|--------|
+| Variable              | Valor                                            | Status       |
+| --------------------- | ------------------------------------------------ | ------------ |
 | **`VITE_API_ORIGIN`** | **`https://guia-despacho-backend.onrender.com`** | ✅ **NUEVO** |
 
 ---
@@ -188,6 +192,7 @@ Usuario → Vercel Frontend → Render Backend → MongoDB Atlas
 ```
 
 **Antes:**
+
 ```
 ❌ Frontend: No sabe dónde está el backend
 ❌ Backend: Solo acepta localhost
@@ -195,6 +200,7 @@ Usuario → Vercel Frontend → Render Backend → MongoDB Atlas
 ```
 
 **Después:**
+
 ```
 ✅ Frontend: Sabe que backend está en Render
 ✅ Backend: Acepta requests de Vercel
@@ -208,10 +214,12 @@ Usuario → Vercel Frontend → Render Backend → MongoDB Atlas
 ### Problema 1: Todavía veo el error de CORS
 
 **Posibles causas:**
+
 1. No esperaste suficiente tiempo a que Render/Vercel re-desplieguen
 2. Hay caché del navegador
 
 **Soluciones:**
+
 1. Espera 5 minutos adicionales
 2. Limpia el caché del navegador: **Ctrl+Shift+R** (Windows/Linux) o **Cmd+Shift+R** (Mac)
 3. Prueba en modo incógnito
@@ -240,6 +248,7 @@ Si las requests van al backend correcto → ✅ Variable configurada correctamen
 **Causa:** Error en el valor de la variable
 
 **Solución:**
+
 1. Ve a Render → Environment
 2. Verifica que `FRONTEND_URL` sea exactamente: `https://guia-despacho.vercel.app`
 3. **Sin** `/` al final
@@ -251,6 +260,7 @@ Si las requests van al backend correcto → ✅ Variable configurada correctamen
 ### Problema 4: Vercel no re-despliega con la nueva variable
 
 **Solución:**
+
 1. Ve a Vercel → Deployments
 2. Busca el último deployment
 3. Haz clic en "Redeploy"
@@ -264,6 +274,7 @@ Si las requests van al backend correcto → ✅ Variable configurada correctamen
 Marca cada item después de completarlo:
 
 ### Backend (Render)
+
 - [ ] Variable `FRONTEND_URL` agregada
 - [ ] Valor: `https://guia-despacho.vercel.app` (sin `/` al final)
 - [ ] Servicio re-desplegado automáticamente
@@ -271,6 +282,7 @@ Marca cada item después de completarlo:
 - [ ] Health check responde correctamente
 
 ### Frontend (Vercel)
+
 - [ ] Variable `VITE_API_ORIGIN` agregada
 - [ ] Valor: `https://guia-despacho-backend.onrender.com` (sin `/` al final)
 - [ ] Re-desplegado manualmente desde Deployments
@@ -278,6 +290,7 @@ Marca cada item después de completarlo:
 - [ ] Sitio accesible en https://guia-despacho.vercel.app
 
 ### Pruebas
+
 - [ ] No hay errores de CORS en la consola
 - [ ] Lista de documentos carga correctamente
 - [ ] Puedo crear nuevos documentos
@@ -314,6 +327,7 @@ Después de completar TODOS los pasos:
 Si después de seguir **TODOS** los pasos sigues teniendo problemas:
 
 1. Toma capturas de pantalla de:
+
    - Variables de entorno en Render
    - Variables de entorno en Vercel
    - Errores en la consola del navegador
@@ -321,6 +335,7 @@ Si después de seguir **TODOS** los pasos sigues teniendo problemas:
    - Logs de Vercel (pestaña Deployments → último deployment → View Function Logs)
 
 2. Verifica que ambos servicios estén activos:
+
    - Render: https://guia-despacho-backend.onrender.com/api/health
    - Vercel: https://guia-despacho.vercel.app
 

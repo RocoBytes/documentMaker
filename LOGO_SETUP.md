@@ -32,6 +32,7 @@ Servido en: https://guia-despacho-backend.onrender.com/uploads/logo.png
 ### En Desarrollo
 
 Abre en tu navegador:
+
 ```
 http://localhost:4000/uploads/logo.png
 ```
@@ -39,11 +40,13 @@ http://localhost:4000/uploads/logo.png
 ### En Producción
 
 Abre en tu navegador:
+
 ```
 https://guia-despacho-backend.onrender.com/uploads/logo.png
 ```
 
 **Resultado esperado:**
+
 - ✅ Se muestra la imagen del logo
 - ❌ Error 404 = Logo no está disponible
 
@@ -54,11 +57,13 @@ https://guia-despacho-backend.onrender.com/uploads/logo.png
 ### Método 1: Via Git (Recomendado)
 
 1. Verifica que el logo existe localmente:
+
    ```bash
    ls -lh server/uploads/logo.png
    ```
 
 2. Agregar al repositorio (si no está):
+
    ```bash
    git add -f server/uploads/logo.png
    git commit -m "Agregar logo de empresa para producción"
@@ -101,6 +106,7 @@ Se agregaron reglas en `client/src/styles/print.css`:
 ```
 
 **Esto asegura que:**
+
 - El logo sea visible en impresión
 - Los colores se mantengan exactos
 - El tamaño sea apropiado
@@ -112,12 +118,12 @@ Se agregaron reglas en `client/src/styles/print.css`:
 Se actualizó `DocumentPrint.jsx` para mejor manejo del logo:
 
 ```jsx
-<img 
-  src={logoSrc} 
-  alt="Logo empresa" 
+<img
+  src={logoSrc}
+  alt="Logo empresa"
   className="company-logo"
   onLoad={() => setLogoLoaded(true)}
-  onError={(e) => { 
+  onError={(e) => {
     console.warn("⚠️ Logo no pudo cargarse");
     e.currentTarget.style.visibility = "hidden";
   }}
@@ -152,6 +158,7 @@ Se actualizó `DocumentPrint.jsx` para mejor manejo del logo:
 ### Ubicación del archivo
 
 El logo debe estar en:
+
 ```
 server/uploads/logo.png
 ```
@@ -180,6 +187,7 @@ server/uploads/logo.png
 ### Via Archivo Manual
 
 1. Reemplaza el archivo:
+
    ```bash
    cp /ruta/a/tu/nuevo-logo.png server/uploads/logo.png
    ```
@@ -198,12 +206,15 @@ server/uploads/logo.png
 ### Problema 1: "Logo no aparece en pantalla ni impresión"
 
 **Solución:**
+
 1. Verifica que el archivo existe:
+
    ```bash
    ls -lh server/uploads/logo.png
    ```
 
 2. Verifica que es accesible:
+
    - Local: http://localhost:4000/uploads/logo.png
    - Producción: https://guia-despacho-backend.onrender.com/uploads/logo.png
 
@@ -234,12 +245,14 @@ server/uploads/logo.png
 ## ✅ Checklist de Verificación
 
 ### Desarrollo Local
+
 - [ ] Logo existe en `server/uploads/logo.png`
 - [ ] Logo accesible en `http://localhost:4000/uploads/logo.png`
 - [ ] Logo aparece en vista de impresión
 - [ ] Logo aparece en PDF generado
 
 ### Producción
+
 - [ ] Logo accesible en `https://guia-despacho-backend.onrender.com/uploads/logo.png`
 - [ ] Logo aparece en `https://guia-despacho.vercel.app/print/[id]`
 - [ ] Logo aparece en PDF generado desde producción
