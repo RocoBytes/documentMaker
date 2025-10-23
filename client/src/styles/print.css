@@ -615,16 +615,24 @@ body {
     opacity: 1 !important;
   }
 
-  /* Asegurar que el header y brand sean visibles */
-  .print-header,
-  .print-header .brand,
+  /* Asegurar que el header mantenga su layout de grid */
+  .print-header {
+    display: grid !important;
+    grid-template-columns: 1fr auto !important;
+    visibility: visible !important;
+  }
+
+  /* Asegurar que el brand mantenga su layout de grid horizontal */
+  .print-header .brand {
+    display: grid !important;
+    grid-auto-flow: column !important;
+    visibility: visible !important;
+  }
+
+  /* Asegurar que las imágenes del logo sean visibles */
   .print-header .brand img {
     visibility: visible !important;
     display: block !important;
-  }
-
-  .print-header .brand {
-    display: grid !important;
   }
 
   /* Asegurar que los colores se impriman */
