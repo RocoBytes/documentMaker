@@ -21,6 +21,11 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 4000;
 
+console.log("🔧 Configuración:");
+console.log("   - PORT:", PORT);
+console.log("   - NODE_ENV:", process.env.NODE_ENV || "development");
+console.log("   - FRONTEND_URL:", process.env.FRONTEND_URL || "No configurado");
+
 // Middlewares
 // CORS - Permitir múltiples orígenes (desarrollo y producción)
 const allowedOrigins = [
@@ -77,10 +82,39 @@ app.use("/api/settings", settingsRouter);
 // app.use("/api/products", productRoutes);
 
 // Conectar a MongoDB Atlas y arrancar servidor
-connectDB().then(() => {
-  app.locals.mongoose = { connection: { readyState: 1 } };
-  app.listen(PORT, () => {
-    console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
-    console.log(`🔗 Health check: http://localhost:${PORT}/api/health`);
+connectDB()
+  .then(() => {
+    app.locals.mongoose = { connection: { readyState: 1 } };
+    
+    const server = app.listen(PORT, '0.0.0.0', () => {
+      console.log(`🚀 Servidor corriendo en puerto ${PORT}`);
+      console.log(`🔗 Health check: http://localhost:${PORT}/api/health`);
+      console.log(`✅ Listo para recibir conexiones`);
+    });
+
+    // Manejo de errores del servidor
+    server.on('error', (error) => {
+      if (error.code === 'EADDRINUSE') {
+        console.error(`❌ Error: Puerto ${PORT} ya está en uso`);
+      } else {
+        console.error('❌ Error del servidor:', error);
+      }
+      process.exit(1);
+    });
+  })
+  .catch((error) => {
+    console.error('❌ Error al conectar a MongoDB:', error);
+    console.error('El servidor no puede arrancar sin conexión a la base de datos');
+    process.exit(1);
   });
+
+// Manejo de señales para cierre graceful
+process.on('SIGTERM', () => {
+  console.log('👋 SIGTERM recibido. Cerrando servidor...');
+  process.exit(0);
+});
+
+process.on('SIGINT', () => {
+  console.log('👋 SIGINT recibido. Cerrando servidor...');
+  process.exit(0);
 });
