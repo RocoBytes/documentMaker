@@ -530,6 +530,17 @@ body {
     width: 100%;
   }
 
+  /* CRÍTICO: Asegurar que las imágenes se muestren en impresión */
+  .print-root img,
+  .company-logo,
+  img.company-logo {
+    visibility: visible !important;
+    display: block !important;
+    opacity: 1 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
   /* Ocultar elementos no imprimibles */
   .no-print,
   .back-btn,
@@ -601,6 +612,19 @@ body {
     width: auto !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
+    opacity: 1 !important;
+  }
+
+  /* Asegurar que el header y brand sean visibles */
+  .print-header,
+  .print-header .brand,
+  .print-header .brand img {
+    visibility: visible !important;
+    display: block !important;
+  }
+
+  .print-header .brand {
+    display: grid !important;
   }
 
   /* Asegurar que los colores se impriman */

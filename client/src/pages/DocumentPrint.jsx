@@ -213,14 +213,21 @@ export default function DocumentPrint() {
                 style={{ 
                   maxHeight: 64, 
                   width: "auto",
-                  display: logoLoaded ? "block" : "block"
+                  display: "block"
                 }}
-                onLoad={() => setLogoLoaded(true)}
+                onLoad={() => {
+                  console.log("✅ Logo cargado exitosamente desde:", logoSrc);
+                  setLogoLoaded(true);
+                }}
                 onError={(e) => { 
-                  console.warn("⚠️ Logo no pudo cargarse desde:", logoSrc);
-                  e.currentTarget.style.visibility = "hidden";
-                  e.currentTarget.style.width = "0";
-                  e.currentTarget.style.height = "0";
+                  console.error("❌ Error al cargar logo desde:", logoSrc);
+                  console.error("Verifica que el archivo exista en el servidor");
+                  // Solo ocultar si realmente falló, no prematuramente
+                  setTimeout(() => {
+                    e.currentTarget.style.visibility = "hidden";
+                    e.currentTarget.style.width = "0";
+                    e.currentTarget.style.height = "0";
+                  }, 100);
                 }}
               />
               {company && (
