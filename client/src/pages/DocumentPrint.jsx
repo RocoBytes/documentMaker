@@ -56,7 +56,7 @@ export default function DocumentPrint() {
       setError(null);
 
       try {
-        const response = await fetch(`/api/documents/${id}`);
+        const response = await fetch(`${API_ORIGIN}/api/documents/${id}`);
 
         if (!response.ok) {
           if (response.status === 404) {

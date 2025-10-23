@@ -22,8 +22,24 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 
 // Middlewares
+// CORS - Permitir múltiples orígenes (desarrollo y producción)
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://localhost:5174",
+  process.env.FRONTEND_URL // URL de Vercel/Render (configurar en .env)
+].filter(Boolean); // Eliminar valores undefined
+
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: function(origin, callback) {
+    // Permitir requests sin origin (como mobile apps o curl)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true
 }));
 app.use(express.json());

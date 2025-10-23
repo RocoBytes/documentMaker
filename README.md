@@ -76,7 +76,7 @@ Si prefieres usar **MongoDB Atlas** en lugar de MongoDB local:
 4. Reemplaza en `server/.env`:
 
 ```env
-MONGODB_URI=mongodb+srv://<usuario>:<password>@cluster.mongodb.net/mernstarter
+MONGODB_URI=mongodb+srv://user:password@cluster.mongodb.net/mernstarter
 PORT=4000
 ```
 

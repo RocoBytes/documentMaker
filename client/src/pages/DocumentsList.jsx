@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { getApiUrl } from "../config/api";
 
 /**
  * Formatea una fecha ISO a formato YYYY-MM-DD HH:mm
@@ -69,7 +70,7 @@ export default function DocumentsList() {
         params.append("q", debouncedSearchQuery.trim());
       }
 
-      const response = await fetch(`/api/documents?${params.toString()}`);
+      const response = await fetch(getApiUrl(`/api/documents?${params.toString()}`));
 
       if (!response.ok) {
         throw new Error(`Error ${response.status}: ${response.statusText}`);

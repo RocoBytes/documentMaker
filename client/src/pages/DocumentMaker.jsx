@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { getApiUrl } from "../config/api";
 
 export default function DocumentMaker() {
   const [formData, setFormData] = useState({
@@ -87,7 +88,7 @@ export default function DocumentMaker() {
     setStatus({ type: "", message: "", documentId: "" });
 
     try {
-      const response = await fetch("/api/documents", {
+      const response = await fetch(getApiUrl("/api/documents"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

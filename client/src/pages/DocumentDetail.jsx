@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
+import { getApiUrl } from "../config/api";
 
 /**
  * Formatea una fecha ISO a formato legible
@@ -30,7 +31,7 @@ export default function DocumentDetail() {
       setError(null);
 
       try {
-        const response = await fetch(`/api/documents/${id}`);
+        const response = await fetch(getApiUrl(`/api/documents/${id}`));
 
         if (!response.ok) {
           if (response.status === 404) {

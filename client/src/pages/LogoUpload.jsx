@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { getApiUrl, API_BASE_URL } from "../config/api";
 
 export default function LogoUpload() {
   const [file, setFile] = useState(null);
@@ -10,7 +11,8 @@ export default function LogoUpload() {
   // Cargar preview del logo actual al montar el componente
   useState(() => {
     const img = new Image();
-    img.src = "http://localhost:4000/uploads/logo.png?t=" + new Date().getTime();
+    const logoUrl = API_BASE_URL ? `${API_BASE_URL}/uploads/logo.png` : "/uploads/logo.png";
+    img.src = logoUrl + "?t=" + new Date().getTime();
     img.onload = () => setPreview(img.src);
   }, []);
 
@@ -55,7 +57,7 @@ export default function LogoUpload() {
       const formData = new FormData();
       formData.append("file", file);
 
-      const response = await fetch("/api/assets/logo", {
+      const response = await fetch(getApiUrl("/api/assets/logo"), {
         method: "POST",
         body: formData
       });
@@ -69,7 +71,8 @@ export default function LogoUpload() {
         });
         
         // Actualizar preview con timestamp para forzar recarga
-        setPreview(`http://localhost:4000${data.url}?t=${new Date().getTime()}`);
+        const logoUrl = API_BASE_URL ? `${API_BASE_URL}${data.url}` : data.url;
+        setPreview(`${logoUrl}?t=${new Date().getTime()}`);
         setFile(null);
         
         // Resetear input file
