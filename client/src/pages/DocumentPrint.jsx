@@ -316,7 +316,7 @@ export default function DocumentPrint() {
                   <span className="info-value">{document.ciudadDestino || ""}</span>
                 </div>
                 <div className="info-row" style={{ fontSize: "10px", lineHeight: "0.8" }}>
-                  <span className="info-label">Centro de Negocio:</span>
+                  <span className="info-label">Proyecto:</span>
                   <span className="info-value">{document.centroDeNegocios || ""}</span>
                 </div>
               </div>

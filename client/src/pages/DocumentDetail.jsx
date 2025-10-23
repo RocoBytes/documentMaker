@@ -197,7 +197,7 @@ export default function DocumentDetail() {
             </div>
             {document.centroDeNegocios && (
               <div style={styles.field}>
-                <span style={styles.fieldLabel}>Centro de Negocios:</span>
+                <span style={styles.fieldLabel}>Proyecto:</span>
                 <span style={styles.fieldValue}>{document.centroDeNegocios}</span>
               </div>
             )}

@@ -325,7 +325,7 @@ export default function DocumentMaker() {
 
               <div style={styles.formGroup}>
                 <label htmlFor="centroDeNegocios" style={styles.label}>
-                  Centro de Negocios
+                  Proyecto
                 </label>
                 <input
                   type="text"
@@ -334,7 +334,7 @@ export default function DocumentMaker() {
                   value={formData.centroDeNegocios}
                   onChange={handleChange}
                   style={styles.input}
-                  placeholder="Centro de negocios"
+                  placeholder="Nombre del proyecto"
                 />
               </div>
             </div>

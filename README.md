@@ -352,7 +352,7 @@ El proyecto incluye un **Document Maker** completo para crear guías de despacho
 
 - **Destino** \* (requerido)
 - **Ciudad** \* (requerido)
-- **Centro de Negocios** (opcional)
+- **Proyecto** (opcional)
 
 ### 🌐 Endpoints de la API
 
