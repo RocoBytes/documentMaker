@@ -593,6 +593,16 @@ body {
     font-size: 16pt;
   }
 
+  /* Asegurar que el logo se imprima correctamente */
+  .company-logo {
+    display: block !important;
+    visibility: visible !important;
+    max-height: 60px !important;
+    width: auto !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
   /* Asegurar que los colores se impriman */
   .section-title,
   .table-header-referencias,

@@ -210,8 +210,18 @@ export default function DocumentPrint() {
                 src={logoSrc} 
                 alt="Logo empresa" 
                 className="company-logo"
-                style={{ maxHeight: 64, width: "auto" }}
-                onError={(e) => { e.currentTarget.style.display = "none"; }}
+                style={{ 
+                  maxHeight: 64, 
+                  width: "auto",
+                  display: logoLoaded ? "block" : "block"
+                }}
+                onLoad={() => setLogoLoaded(true)}
+                onError={(e) => { 
+                  console.warn("⚠️ Logo no pudo cargarse desde:", logoSrc);
+                  e.currentTarget.style.visibility = "hidden";
+                  e.currentTarget.style.width = "0";
+                  e.currentTarget.style.height = "0";
+                }}
               />
               {company && (
                 <div className="company-lines">

@@ -1,16 +1,251 @@
 # 📄 Configuración de Logo y Empresa
 
-## 🖼️ Subir Logo
+## ✅ Estado Actual
+
+- ✅ Logo configurado en `DocumentPrint.jsx`
+- ✅ Estilos de impresión actualizados en `print.css`
+- ✅ Logo funciona en desarrollo local
+- ⚠️ **Logo necesita verificarse en producción (Render)**
+
+---
+
+## 🖼️ Cómo Funciona el Logo
+
+### En Desarrollo (Local)
+
+```
+Logo ubicado en: server/uploads/logo.png
+Servido en: http://localhost:4000/uploads/logo.png
+```
+
+### En Producción (Render)
+
+```
+Logo debe estar en: server/uploads/logo.png
+Servido en: https://guia-despacho-backend.onrender.com/uploads/logo.png
+```
+
+---
+
+## 🔍 Verificar si el Logo Está Funcionando
+
+### En Desarrollo
+
+Abre en tu navegador:
+```
+http://localhost:4000/uploads/logo.png
+```
+
+### En Producción
+
+Abre en tu navegador:
+```
+https://guia-despacho-backend.onrender.com/uploads/logo.png
+```
+
+**Resultado esperado:**
+- ✅ Se muestra la imagen del logo
+- ❌ Error 404 = Logo no está disponible
+
+---
+
+## 📤 Subir Logo a Producción
+
+### Método 1: Via Git (Recomendado)
+
+1. Verifica que el logo existe localmente:
+   ```bash
+   ls -lh server/uploads/logo.png
+   ```
+
+2. Agregar al repositorio (si no está):
+   ```bash
+   git add -f server/uploads/logo.png
+   git commit -m "Agregar logo de empresa para producción"
+   git push origin main
+   ```
+
+3. Espera 2-3 minutos a que Render re-despliegue
+
+4. Verifica:
+   ```
+   https://guia-despacho-backend.onrender.com/uploads/logo.png
+   ```
+
+---
+
+### Método 2: Via Interfaz Web
+
+1. Abre: https://guia-despacho.vercel.app/logo
+2. Sube el logo desde tu computadora
+3. El logo se guardará automáticamente en Render
+
+---
+
+## 🎨 Cambios Realizados para Impresión
+
+### 1. CSS de Impresión Actualizado
+
+Se agregaron reglas en `client/src/styles/print.css`:
+
+```css
+/* Asegurar que el logo se imprima correctamente */
+.company-logo {
+  display: block !important;
+  visibility: visible !important;
+  max-height: 60px !important;
+  width: auto !important;
+  -webkit-print-color-adjust: exact !important;
+  print-color-adjust: exact !important;
+}
+```
+
+**Esto asegura que:**
+- El logo sea visible en impresión
+- Los colores se mantengan exactos
+- El tamaño sea apropiado
+
+---
+
+### 2. Manejo de Errores Mejorado
+
+Se actualizó `DocumentPrint.jsx` para mejor manejo del logo:
+
+```jsx
+<img 
+  src={logoSrc} 
+  alt="Logo empresa" 
+  className="company-logo"
+  onLoad={() => setLogoLoaded(true)}
+  onError={(e) => { 
+    console.warn("⚠️ Logo no pudo cargarse");
+    e.currentTarget.style.visibility = "hidden";
+  }}
+/>
+```
+
+---
+
+## 🧪 Probar la Impresión del Logo
+
+### Test 1: Vista en Pantalla
+
+1. Abre: http://localhost:5173/documents (desarrollo)
+   O: https://guia-despacho.vercel.app/documents (producción)
+2. Haz clic en un documento → "Ver Impresión"
+3. **Deberías ver** el logo en la parte superior izquierda
+
+---
+
+### Test 2: Generar PDF
+
+1. En la vista de impresión, clic en **"🖨️ Imprimir / Guardar PDF"**
+2. En la vista previa:
+   - ✅ El logo **DEBE** aparecer
+   - ✅ Debe tener colores correctos
+   - ✅ Debe estar bien alineado
+
+---
+
+## 📋 Requisitos del Logo
 
 ### Ubicación del archivo
 
-El logo debe estar en formato **PNG** y ubicado en:
-
+El logo debe estar en:
 ```
 server/uploads/logo.png
 ```
 
-### Requisitos
+### Requisitos Técnicos
+
+- ✅ **Formato**: PNG (recomendado), JPG, WebP, o SVG
+- ✅ **Tamaño máximo**: 2 MB
+- ✅ **Dimensiones recomendadas**: 300px ancho x 100px alto
+- ✅ **Fondo**: Transparente (PNG) o blanco
+- ✅ **Resolución**: 150 DPI o superior para impresión nítida
+
+---
+
+## 🔄 Cambiar el Logo
+
+### Via Interfaz Web (Método Fácil)
+
+1. Abre: http://localhost:5173/logo (desarrollo)
+   O: https://guia-despacho.vercel.app/logo (producción)
+2. Haz clic en **"Seleccionar archivo"**
+3. Elige tu logo
+4. Haz clic en **"Subir Logo"**
+5. El logo se actualizará automáticamente
+
+### Via Archivo Manual
+
+1. Reemplaza el archivo:
+   ```bash
+   cp /ruta/a/tu/nuevo-logo.png server/uploads/logo.png
+   ```
+
+2. Para producción, haz commit y push:
+   ```bash
+   git add server/uploads/logo.png
+   git commit -m "Actualizar logo de empresa"
+   git push origin main
+   ```
+
+---
+
+## 🐛 Solución de Problemas
+
+### Problema 1: "Logo no aparece en pantalla ni impresión"
+
+**Solución:**
+1. Verifica que el archivo existe:
+   ```bash
+   ls -lh server/uploads/logo.png
+   ```
+
+2. Verifica que es accesible:
+   - Local: http://localhost:4000/uploads/logo.png
+   - Producción: https://guia-despacho-backend.onrender.com/uploads/logo.png
+
+3. Si da 404, sube el logo usando uno de los métodos arriba
+
+---
+
+### Problema 2: "Logo aparece en pantalla pero NO en PDF"
+
+**Solución:** Ya está resuelto con los cambios en CSS. Si persiste:
+
+1. Abre DevTools (F12) → Console
+2. Busca errores o warnings sobre el logo
+3. Verifica que el navegador soporte `print-color-adjust: exact`
+
+---
+
+### Problema 3: "Error CORS al cargar logo"
+
+**Solución:**
+
+1. Verifica que `FRONTEND_URL` esté configurado en Render
+2. El servidor ya tiene CORS configurado correctamente
+3. Limpia cache del navegador: Ctrl+Shift+R (Win) o Cmd+Shift+R (Mac)
+
+---
+
+## ✅ Checklist de Verificación
+
+### Desarrollo Local
+- [ ] Logo existe en `server/uploads/logo.png`
+- [ ] Logo accesible en `http://localhost:4000/uploads/logo.png`
+- [ ] Logo aparece en vista de impresión
+- [ ] Logo aparece en PDF generado
+
+### Producción
+- [ ] Logo accesible en `https://guia-despacho-backend.onrender.com/uploads/logo.png`
+- [ ] Logo aparece en `https://guia-despacho.vercel.app/print/[id]`
+- [ ] Logo aparece en PDF generado desde producción
+- [ ] Logo mantiene colores correctos en impresión
+
+--- Técnicos
 
 - ✅ Formato: **PNG**
 - ✅ Tamaño recomendado: máximo 2MB
