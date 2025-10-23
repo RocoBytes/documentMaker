@@ -124,15 +124,160 @@ export default function DocumentsList() {
     }
   };
 
+  // Función para exportar todos los documentos a CSV
+  const handleExportCSV = async () => {
+    try {
+      setLoading(true);
+      
+      // Fetch de TODOS los documentos (sin paginación)
+      const response = await fetch(getApiUrl(`/api/documents?limit=999999&sort=${sortOrder}`));
+      
+      if (!response.ok) {
+        throw new Error(`Error al obtener documentos: ${response.status}`);
+      }
+      
+      const result = await response.json();
+      const allDocuments = result.data || [];
+      
+      if (allDocuments.length === 0) {
+        alert("No hay documentos para exportar");
+        return;
+      }
+      
+      // Convertir documentos a formato CSV
+      const csvContent = convertToCSV(allDocuments);
+      
+      // Crear blob con BOM para compatibilidad con Excel
+      const BOM = "\uFEFF";
+      const blob = new Blob([BOM + csvContent], { type: "text/csv;charset=utf-8;" });
+      
+      // Crear link de descarga
+      const link = document.createElement("a");
+      const url = URL.createObjectURL(blob);
+      link.setAttribute("href", url);
+      link.setAttribute("download", `documentos_${new Date().toISOString().split('T')[0]}.csv`);
+      link.style.visibility = "hidden";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      alert(`✅ Exportados ${allDocuments.length} documentos a CSV`);
+    } catch (error) {
+      alert(`❌ Error al exportar: ${error.message}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Función para convertir documentos a formato CSV
+  const convertToCSV = (documents) => {
+    // Definir encabezados
+    const headers = [
+      "N° Documento",
+      "Fecha Creación",
+      "Destinatario",
+      "RUT",
+      "Dirección",
+      "Ciudad Destinatario",
+      "Giro",
+      "Chofer",
+      "RUT Chofer",
+      "Destino",
+      "Ciudad Destino",
+      "Proyecto",
+      "Total Cantidad",
+      "Observaciones",
+      "Items (Detalle)",
+      "Referencias (Documentos)",
+      "ID MongoDB"
+    ];
+    
+    // Crear filas
+    const rows = documents.map(doc => {
+      // Formatear fecha a DD-MM-YYYY HH:mm
+      const formatDateForCSV = (isoString) => {
+        if (!isoString) return "";
+        const date = new Date(isoString);
+        const day = String(date.getDate()).padStart(2, "0");
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const year = date.getFullYear();
+        const hours = String(date.getHours()).padStart(2, "0");
+        const minutes = String(date.getMinutes()).padStart(2, "0");
+        return `${day}-${month}-${year} ${hours}:${minutes}`;
+      };
+      
+      // Formatear items (concatenar en una celda)
+      const itemsText = (doc.items || [])
+        .map((item, idx) => 
+          `[${idx + 1}] ${item.codigoItem || ""} - ${item.detalle || ""} (Cant: ${item.cantidad || 0})`
+        )
+        .join(" | ");
+      
+      // Formatear referencias (concatenar en una celda)
+      const referenciasText = (doc.referencias || [])
+        .filter(ref => ref.documentoReferencia || ref.nroDocto || ref.nroSAP)
+        .map(ref => 
+          `${ref.documentoReferencia || ""} N°${ref.nroDocto || ""} SAP:${ref.nroSAP || ""} (${ref.fecha || ""})`
+        )
+        .join(" | ");
+      
+      return [
+        doc.docNumber || "",
+        formatDateForCSV(doc.createdAt),
+        doc.destinatario || "",
+        doc.rut || "",
+        doc.direccion || "",
+        doc.ciudadDestinatario || "",
+        doc.giro || "",
+        doc.chofer || "",
+        doc.rutChofer || "",
+        doc.destino || "",
+        doc.ciudadDestino || "",
+        doc.centroDeNegocios || "",
+        doc.totalCantidad || 0,
+        doc.observaciones || "",
+        itemsText,
+        referenciasText,
+        doc._id || ""
+      ];
+    });
+    
+    // Función para escapar valores CSV (manejar comillas y comas)
+    const escapeCSV = (value) => {
+      if (value === null || value === undefined) return "";
+      const stringValue = String(value);
+      // Si contiene coma, comillas o salto de línea, envolver en comillas y escapar comillas internas
+      if (stringValue.includes(",") || stringValue.includes('"') || stringValue.includes("\n")) {
+        return `"${stringValue.replace(/"/g, '""')}"`;
+      }
+      return stringValue;
+    };
+    
+    // Construir CSV
+    const headerRow = headers.map(escapeCSV).join(",");
+    const dataRows = rows.map(row => row.map(escapeCSV).join(","));
+    
+    return [headerRow, ...dataRows].join("\n");
+  };
+
   return (
     <div style={styles.container}>
       <div style={styles.card}>
         {/* Header */}
         <div style={styles.header}>
           <h1 style={styles.title}>📋 Listado de Documentos</h1>
-          <Link to="/documents/new" style={styles.createButton}>
-            ➕ Nuevo Documento
-          </Link>
+          <div style={styles.headerButtons}>
+            <button 
+              onClick={handleExportCSV} 
+              style={styles.exportButton}
+              disabled={loading}
+            >
+              📊 Exportar CSV
+            </button>
+            <Link to="/documents/new" style={styles.createButton}>
+              ➕ Nuevo Documento
+            </Link>
+          </div>
         </div>
 
         {/* Controles */}
@@ -346,6 +491,11 @@ const styles = {
     fontWeight: "bold",
     color: "#333",
   },
+  headerButtons: {
+    display: "flex",
+    gap: "10px",
+    flexWrap: "wrap",
+  },
   createButton: {
     padding: "12px 24px",
     backgroundColor: "#667eea",
@@ -354,6 +504,19 @@ const styles = {
     borderRadius: "8px",
     fontWeight: "600",
     transition: "background-color 0.3s",
+    border: "none",
+    cursor: "pointer",
+  },
+  exportButton: {
+    padding: "12px 24px",
+    backgroundColor: "#28a745",
+    color: "white",
+    border: "none",
+    borderRadius: "8px",
+    fontWeight: "600",
+    cursor: "pointer",
+    transition: "background-color 0.3s",
+    fontSize: "1rem",
   },
   controls: {
     display: "grid",
