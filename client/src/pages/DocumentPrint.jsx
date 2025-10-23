@@ -234,13 +234,10 @@ export default function DocumentPrint() {
                 <div className="company-lines">
                   <div className="company-name">{company.name}</div>
                   <div className="company-sub">
-                    <span>R.U.T.: {company.rut}</span> · <span>{company.activity}</span>
+                    R.U.T.: {company.rut} · Servicios / Telecomunicaciones
                   </div>
                   <div className="company-sub">
-                    <span>{company.address}</span> · <span>{company.city}</span>
-                  </div>
-                  <div className="company-sub">
-                    <span>{company.email}</span>
+                    Av. Lo Espejo 1221 · Santiago
                   </div>
                 </div>
               )}
