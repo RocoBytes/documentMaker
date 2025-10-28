@@ -71,7 +71,7 @@ export default function DocumentDetail() {
           <div style={styles.error}>
             <h2>❌ Error</h2>
             <p>{error}</p>
-            <div style={styles.actions}>
+            <div style={styles.actionsCenter}>
               <button onClick={() => navigate(-1)} style={styles.backButton}>
                 ← Volver
               </button>
@@ -465,7 +465,7 @@ const styles = {
     textAlign: "center",
     padding: "40px 20px",
   },
-  actions: {
+  actionsCenter: {
     display: "flex",
     justifyContent: "center",
     gap: "15px",

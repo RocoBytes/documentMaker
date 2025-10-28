@@ -32,10 +32,28 @@ body {
    ESTILOS DE PANTALLA
    ======================================== */
 
-.print-page {
+.print-root {
   min-height: 100vh;
   background: #f0f0f0;
   padding: 20px;
+}
+
+.print-page {
+  max-width: 210mm; /* A4 width */
+  margin: 0 auto;
+  background: white;
+  padding: 12mm;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  /* En pantalla: layout normal sin flex */
+  display: block;
+}
+
+.page-content {
+  /* Contenedor del contenido principal (sin firmas) */
+}
+
+.print-container {
+  /* Wrapper interno para márgenes y espaciado */
 }
 
 .back-btn {
@@ -431,7 +449,10 @@ body {
   display: grid;
   grid-template-columns: 2fr 1fr;  /* 2/3 para "Recibido por", 1/3 para "Firmado por" */
   gap: 8px;
-  margin-top: 8px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 2px solid var(--gray-border);
+  /* En pantalla: comportamiento normal */
 }
 
 .sign-box {
@@ -520,12 +541,51 @@ body {
     print-color-adjust: exact !important;
   }
 
-  /* IMPORTANTE: Mantener firmas con proporciones 2/3 y 1/3 en impresión */
+  /* Ocultar controles de UI */
+  .no-print {
+    display: none !important;
+  }
+
+  /* IMPORTANTE: Layout flex para footer pegado en 1 página */
+  .print-root {
+    background: white;
+    padding: 0;
+  }
+
+  .print-page {
+    /* min-height: 100vh hace que la página use toda la altura disponible (A4 - márgenes) */
+    min-height: 100vh;
+    display: flex !important;
+    flex-direction: column !important;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+    page-break-after: auto;
+  }
+
+  .page-content {
+    /* El contenido crece pero no fuerza el footer hacia abajo */
+    flex: 1 1 auto;
+  }
+
+  /* Firmas ancladas al final con margin-top: auto */
   .signatures {
+    margin-top: auto !important;
+    padding-top: 5mm !important;
+    border-top: 2px solid var(--gray-border) !important;
+    page-break-inside: avoid !important;  /* No cortar firmas entre páginas */
+    flex-shrink: 0;
     display: grid !important;
     grid-template-columns: 2fr 1fr !important;  /* 2/3 "Recibido por", 1/3 "Firmado por" */
     gap: 8px;
-    margin-top: 6mm !important;  /* Espacio reducido para que quepa en una hoja */
+  }
+
+  /* Fallback: Forzar firmas a nueva página completa para documentos largos */
+  .print-page.force-signatures-new-page .signatures {
+    break-before: page !important;  /* Empieza en nueva hoja */
+    page-break-before: always !important;  /* Compatibilidad con navegadores antiguos */
+    margin-top: 0 !important;  /* Ya no empujar, está en hoja nueva */
+    padding-top: 0 !important;
   }
 
   /* AISLAMIENTO: Ocultar todo excepto .print-root */
@@ -597,9 +657,13 @@ body {
     page-break-after: avoid;
   }
 
-  /* Firmas: espaciado superior en impresión */
+  /* Firmas: espaciado superior en impresión y borde separador */
   .signatures {
-    margin-top: 6mm;
+    margin-top: 10mm;
+    padding-top: 5mm;
+    border-top: 2px solid var(--gray-border) !important;
+    page-break-inside: avoid;
+    page-break-before: auto;
   }
 
   /* Ajustes de tamaño de fuente */

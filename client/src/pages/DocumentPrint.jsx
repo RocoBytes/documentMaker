@@ -33,12 +33,14 @@ export default function DocumentPrint() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const imgRef = useRef(null);
+  const pageRef = useRef(null);
   
   const [document, setDocument] = useState(null);
   const [company, setCompany] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [logoLoaded, setLogoLoaded] = useState(false);
+  const [forceSignaturesNewPage, setForceSignaturesNewPage] = useState(false);
   
   const auto = searchParams.get("auto") === "1";
 
@@ -149,6 +151,33 @@ export default function DocumentPrint() {
     };
   }, [auto, document, company, loading]);
 
+  // Detectar si el contenido excede una página para activar fallback automático
+  useEffect(() => {
+    if (!document || !company || loading) return;
+
+    // Esperar un poco a que todo se renderice completamente
+    const checkTimeout = setTimeout(() => {
+      const pageElement = pageRef.current;
+      if (!pageElement) return;
+
+      // Heurística: si el alto del contenido supera ~277mm (A4 - márgenes),
+      // consideramos que necesita más de una página
+      // En px aproximadamente: 277mm ≈ 1046px a 96dpi
+      const A4_HEIGHT_PX = 1046;
+      const contentHeight = pageElement.scrollHeight;
+      
+      if (contentHeight > A4_HEIGHT_PX) {
+        setForceSignaturesNewPage(true);
+        console.log(`📄 Documento largo detectado (${contentHeight}px > ${A4_HEIGHT_PX}px). Firmas irán a nueva página.`);
+      } else {
+        setForceSignaturesNewPage(false);
+        console.log(`📄 Documento corto (${contentHeight}px). Firmas pegadas al final.`);
+      }
+    }, 300);
+
+    return () => clearTimeout(checkTimeout);
+  }, [document, company, loading, logoLoaded]);
+
   const handlePrint = () => {
     window.print();
   };
@@ -191,17 +220,44 @@ export default function DocumentPrint() {
 
   return (
     <div className="print-root">
-      <div className="print-page">
-        {/* Botones de acción - no se imprimen */}
-        <button onClick={handleBack} className="no-print back-btn">
-          ← Volver
-        </button>
-        <button onClick={handlePrint} className="no-print print-btn">
-          🖨️ Imprimir / Guardar PDF
-        </button>
+      {/* Botones de acción - no se imprimen */}
+      <button onClick={handleBack} className="no-print back-btn">
+        ← Volver
+      </button>
+      <button onClick={handlePrint} className="no-print print-btn">
+        🖨️ Imprimir / Guardar PDF
+      </button>
 
-        {/* Contenedor principal */}
-        <div className="print-container">
+      {/* Toggle manual (opcional) - solo visible en pantalla */}
+      <label className="no-print" style={{
+        position: "fixed",
+        top: "70px",
+        right: "20px",
+        background: "white",
+        padding: "8px 12px",
+        borderRadius: "6px",
+        boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+        fontSize: "13px",
+        cursor: "pointer",
+        zIndex: 1000
+      }}>
+        <input
+          type="checkbox"
+          checked={forceSignaturesNewPage}
+          onChange={(e) => setForceSignaturesNewPage(e.target.checked)}
+          style={{ marginRight: "6px" }}
+        />
+        Firmas en página nueva
+      </label>
+
+      {/* Contenedor de página A4 con flex layout */}
+      <div 
+        ref={pageRef}
+        className={`print-page ${forceSignaturesNewPage ? "force-signatures-new-page" : ""}`}
+      >
+        {/* Contenedor principal del contenido (sin firmas) */}
+        <div className="page-content">
+          <div className="print-container">
           {/* Header: Logo + Información de Empresa + Badge */}
           <header className="print-header">
             <div className="brand">
@@ -381,8 +437,10 @@ export default function DocumentPrint() {
             </div>
           </div>
         )}
+          </div>
+        </div>
 
-        {/* Bloque de firmas */}
+        {/* Bloque de firmas - Anclado al final de la página impresa */}
         <section className="signatures">
           
           {/* Recibido por (quien recibe) */}
@@ -418,7 +476,6 @@ export default function DocumentPrint() {
             <div className="sign-title">Firma</div>
           </div>
         </section>
-      </div>
       </div>
     </div>
   );
