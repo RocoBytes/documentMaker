@@ -254,6 +254,7 @@ export default function DocumentPrint() {
               <div className="title">GUÍA DE DESPACHO</div>
               <div className="subtitle">Traslado Interno</div>
               <div className="doc-number">N° {document.docNumber || "---"}</div>
+              <div className="subtitle">No constituye venta</div>
             </aside>
           </header>
 

@@ -103,9 +103,9 @@ body {
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
-  gap: 16px;
-  margin-bottom: 12px;
-  padding-bottom: 12px;
+  gap: 12px;
+  margin-bottom: 8px;
+  padding-bottom: 8px;
   border-bottom: 2px solid var(--border);
   page-break-inside: avoid;
 }
@@ -115,12 +115,12 @@ body {
   display: grid;
   grid-auto-flow: column;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   justify-content: start;
 }
 
 .print-header .company-logo {
-  max-height: 64px;
+  max-height: 56px;
   width: auto;
   display: block;
 }
@@ -128,20 +128,20 @@ body {
 .print-header .company-lines {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 1px;
 }
 
 .print-header .company-name {
   font-weight: 700;
-  font-size: 14px;
+  font-size: 13px;
   color: #000;
-  line-height: 1.2;
+  line-height: 1.1;
 }
 
 .print-header .company-sub {
   color: #444;
-  font-size: 12px;
-  line-height: 1.3;
+  font-size: 11px;
+  line-height: 1.2;
 }
 
 .print-header .company-sub span {
@@ -151,46 +151,51 @@ body {
 /* Doc Badge */
 .print-header .doc-badge {
   border: 2px solid #90A8C8;
-  border-radius: 10px;
-  padding: 10px 14px;
+  border-radius: 8px;
+  padding: 8px 12px;
   text-align: center;
-  min-width: 220px;
+  min-width: 200px;
   background: white;
 }
 
 .print-header .doc-badge .rut {
-  font-size: 11px;
+  font-size: 10px;
   color: #555;
-  margin-bottom: 4px;
+  margin-bottom: 3px;
+  line-height: 1.1;
 }
 
 .print-header .doc-badge .title {
   font-weight: 800;
   color: var(--blue);
-  font-size: 14px;
-  margin: 4px 0;
+  font-size: 13px;
+  margin: 3px 0;
+  line-height: 1.1;
 }
 
 .print-header .doc-badge .subtitle {
   color: #5576a5;
-  font-size: 12px;
+  font-size: 11px;
   margin-top: -2px;
-  margin-bottom: 4px;
+  margin-bottom: 3px;
+  line-height: 1.1;
 }
 
 .print-header .doc-badge .doc-number {
   font-weight: 800;
   color: var(--blue);
-  font-size: 16px;
-  margin-top: 4px;
+  font-size: 15px;
+  margin-top: 3px;
+  line-height: 1.1;
 }
 
 /* Fecha de emisión */
 .emission-date {
   text-align: right;
-  font-size: 12px;
-  margin-bottom: 15px;
+  font-size: 11px;
+  margin-bottom: 10px;
   color: #333;
+  line-height: 1.2;
 }
 
 /* ========================================
@@ -198,18 +203,19 @@ body {
    ======================================== */
 
 .section {
-  margin-bottom: 15px;
+  margin-bottom: 8px;
   page-break-inside: avoid;
 }
 
 .section-title {
   background: var(--blue);
   color: white;
-  padding: 8px 12px;
+  padding: 4px 10px;
   font-weight: bold;
-  font-size: 13px;
+  font-size: 11px;
   margin-bottom: 0;
   border-radius: 4px 4px 0 0;
+  line-height: 1.2;
 }
 
 /* ========================================
@@ -220,7 +226,7 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
-  padding: 12px;
+  padding: 8px 10px;
   border: 1px solid var(--gray-border);
   border-top: none;
   border-radius: 0 0 4px 4px;
@@ -230,14 +236,15 @@ body {
 .info-col {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
 }
 
 .info-row {
   display: grid;
   grid-template-columns: 140px 1fr;
   gap: 8px;
-  font-size: 12px;
+  font-size: 11px;
+  line-height: 1.3;
 }
 
 .info-label {
@@ -270,8 +277,9 @@ body {
 }
 
 .table-header-referencias > div {
-  padding: 8px 10px;
+  padding: 5px 8px;
   border-right: 1px solid rgba(255,255,255,0.2);
+  line-height: 1.2;
 }
 
 .table-header-referencias > div:last-child {
@@ -281,8 +289,9 @@ body {
 .table-row-referencias {
   display: grid;
   grid-template-columns: 2fr 1.2fr 1.2fr 1.2fr;
-  font-size: 11px;
+  font-size: 10px;
   border-bottom: 1px solid var(--gray-border);
+  line-height: 1.3;
 }
 
 .table-row-referencias:last-child {
@@ -290,7 +299,7 @@ body {
 }
 
 .table-row-referencias > div {
-  padding: 6px 10px;
+  padding: 4px 8px;
   border-right: 1px solid var(--gray-border);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -321,8 +330,9 @@ body {
 }
 
 .table-header-items > div {
-  padding: 8px 10px;
+  padding: 5px 8px;
   border-right: 1px solid rgba(255,255,255,0.2);
+  line-height: 1.2;
 }
 
 .table-header-items > div:last-child {
@@ -333,9 +343,10 @@ body {
 .table-row-items {
   display: grid;
   grid-template-columns: 1fr 4fr 1fr;
-  font-size: 11px;
+  font-size: 10px;
   border-bottom: 1px solid var(--gray-border);
   page-break-inside: avoid;
+  line-height: 1.3;
 }
 
 .table-row-items:last-child {
@@ -343,7 +354,7 @@ body {
 }
 
 .table-row-items > div {
-  padding: 6px 10px;
+  padding: 4px 8px;
   border-right: 1px solid var(--gray-border);
 }
 
@@ -367,28 +378,29 @@ body {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 12px;
-  padding: 8px 12px;
+  gap: 10px;
+  padding: 5px 10px;
   background: var(--gray-light);
   border: 1px solid var(--gray-border);
   border-radius: 4px;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   page-break-inside: avoid;
+  line-height: 1.2;
 }
 
 .totales-label {
   font-weight: 600;
-  font-size: 12px;
+  font-size: 11px;
   color: var(--blue);
 }
 
 .totales-value {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: bold;
   color: var(--blue);
-  min-width: 50px;
+  min-width: 45px;
   text-align: center;
-  padding: 4px 10px;
+  padding: 3px 8px;
   background: white;
   border: 2px solid var(--blue);
   border-radius: 4px;
@@ -399,15 +411,15 @@ body {
    ======================================== */
 
 .observaciones-box {
-  padding: 10px;
+  padding: 8px;
   background: white;
   border: 1px solid var(--gray-border);
   border-top: none;
   border-radius: 0 0 4px 4px;
-  min-height: 50px;
+  min-height: 40px;
   white-space: pre-wrap;
-  font-size: 11px;
-  line-height: 1.5;
+  font-size: 10px;
+  line-height: 1.4;
   color: #333;
 }
 
@@ -418,37 +430,39 @@ body {
 .signatures {
   display: grid;
   grid-template-columns: 2fr 1fr;  /* 2/3 para "Recibido por", 1/3 para "Firmado por" */
-  gap: 10px;
-  margin-top: 10px;
+  gap: 8px;
+  margin-top: 8px;
 }
 
 .sign-box {
   border: 1.5px solid var(--border);
   border-radius: 6px;
-  padding: 10px;
-  min-height: 80px;
+  padding: 8px;
+  min-height: 70px;
   background: white;
   page-break-inside: avoid;
 }
 
 .sign-title {
   font-weight: 700;
-  font-size: 11px;
-  margin-bottom: 6px;
+  font-size: 10px;
+  margin-bottom: 5px;
   color: var(--blue);
+  line-height: 1.2;
 }
 
 /* Estilos para "Firmado por" (sin líneas) */
 .sign-field-label {
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 600;
   color: #555;
-  margin-top: 8px;
-  margin-bottom: 4px;
+  margin-top: 6px;
+  margin-bottom: 3px;
+  line-height: 1.2;
 }
 
 .sign-space {
-  min-height: 30px;
+  min-height: 25px;
   border: 1px dashed var(--gray-border);
   border-radius: 4px;
   background: #fafafa;
@@ -458,25 +472,26 @@ body {
 .line-row {
   display: grid;
   grid-template-columns: auto 1fr auto 1fr;
-  gap: 8px;
+  gap: 6px;
   align-items: center;
-  margin: 5px 0;
-  font-size: 10px;
+  margin: 3px 0;
+  font-size: 9px;
+  line-height: 1.2;
 }
 
 .line {
   border-bottom: 1px solid var(--border);
-  min-height: 16px;
-  padding: 2px 4px;
+  min-height: 14px;
+  padding: 1px 3px;
 }
 
 .legal-note {
-  font-size: 9px;
-  margin-top: 8px;
-  line-height: 1.3;
+  font-size: 8px;
+  margin-top: 6px;
+  line-height: 1.2;
   text-align: justify;
   color: #444;
-  padding: 6px;
+  padding: 4px;
   background: var(--gray-light);
   border-radius: 3px;
 }
@@ -509,8 +524,8 @@ body {
   .signatures {
     display: grid !important;
     grid-template-columns: 2fr 1fr !important;  /* 2/3 "Recibido por", 1/3 "Firmado por" */
-    gap: 10px;
-    margin-top: 8mm !important;  /* Espacio reducido para que quepa en una hoja */
+    gap: 8px;
+    margin-top: 6mm !important;  /* Espacio reducido para que quepa en una hoja */
   }
 
   /* AISLAMIENTO: Ocultar todo excepto .print-root */
@@ -552,7 +567,7 @@ body {
     margin: 0;
     padding: 0;
     background: white;
-    font-size: 11pt;
+    font-size: 10pt;
   }
 
   /* Contenedor principal */
@@ -584,31 +599,31 @@ body {
 
   /* Firmas: espaciado superior en impresión */
   .signatures {
-    margin-top: 10mm;
+    margin-top: 6mm;
   }
 
   /* Ajustes de tamaño de fuente */
   body {
-    font-size: 11pt;
+    font-size: 10pt;
   }
 
   .section-title {
-    font-size: 12pt;
+    font-size: 10pt;
   }
 
   .print-header .doc-badge .title {
-    font-size: 14pt;
+    font-size: 12pt;
   }
 
   .print-header .doc-badge .doc-number {
-    font-size: 16pt;
+    font-size: 14pt;
   }
 
   /* Asegurar que el logo se imprima correctamente */
   .company-logo {
     display: block !important;
     visibility: visible !important;
-    max-height: 60px !important;
+    max-height: 52px !important;
     width: auto !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
@@ -675,25 +690,26 @@ body {
 
   /* Ajuste de fuentes en firmas */
   .sign-title {
-    font-size: 10pt;
+    font-size: 9pt;
   }
 
   .sign-field-label {
-    font-size: 9pt;
+    font-size: 8pt;
   }
 
   .line-row {
-    font-size: 9pt;
+    font-size: 8pt;
   }
 
   .legal-note {
-    font-size: 8pt;
+    font-size: 7pt;
+    line-height: 1.1;
   }
 
   /* Reducir altura mínima de recuadros en impresión */
   .sign-box {
-    min-height: 70px;
-    padding: 8px;
+    min-height: 60px;
+    padding: 6px;
   }
 }
 

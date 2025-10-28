@@ -267,6 +267,12 @@ export default function DocumentsList() {
         <div style={styles.header}>
           <h1 style={styles.title}>📋 Listado de Documentos</h1>
           <div style={styles.headerButtons}>
+            <Link to="/recipients" style={styles.recipientsButton}>
+              📇 Destinatarios
+            </Link>
+            <Link to="/drivers" style={styles.driversButton}>
+              🚚 Choferes
+            </Link>
             <button 
               onClick={handleExportCSV} 
               style={styles.exportButton}
@@ -506,6 +512,31 @@ const styles = {
     transition: "background-color 0.3s",
     border: "none",
     cursor: "pointer",
+    display: "inline-block",
+  },
+  recipientsButton: {
+    padding: "12px 24px",
+    backgroundColor: "#6c757d",
+    color: "white",
+    textDecoration: "none",
+    borderRadius: "8px",
+    fontWeight: "600",
+    transition: "background-color 0.3s",
+    border: "none",
+    cursor: "pointer",
+    display: "inline-block",
+  },
+  driversButton: {
+    padding: "12px 24px",
+    backgroundColor: "#17a2b8",
+    color: "white",
+    textDecoration: "none",
+    borderRadius: "8px",
+    fontWeight: "600",
+    transition: "background-color 0.3s",
+    border: "none",
+    cursor: "pointer",
+    display: "inline-block",
   },
   exportButton: {
     padding: "12px 24px",

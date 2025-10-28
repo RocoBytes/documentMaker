@@ -9,6 +9,8 @@ import { connectDB } from "./config/db.js";
 import documentsRouter from "./routes/documents.js";
 import assetsRouter from "./routes/assets.js";
 import settingsRouter from "./routes/settings.js";
+import recipientsRouter from "./routes/recipients.js";
+import driversRouter from "./routes/drivers.js";
 
 // Cargar variables de entorno
 dotenv.config();
@@ -74,6 +76,8 @@ app.get("/api/health", (req, res) => {
 
 // Rutas de la API
 app.use("/api/documents", documentsRouter);
+app.use("/api/recipients", recipientsRouter);
+app.use("/api/drivers", driversRouter);
 app.use("/api/assets", assetsRouter);
 app.use("/api/settings", settingsRouter);
 

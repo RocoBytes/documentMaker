@@ -1,9 +1,18 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import { getApiUrl } from "../config/api";
 
 export default function DocumentMaker() {
   const navigate = useNavigate();
+  
+  // Estado para destinatarios
+  const [recipients, setRecipients] = useState([]);
+  const [selectedRecipientId, setSelectedRecipientId] = useState("");
+  
+  // Estado para choferes
+  const [drivers, setDrivers] = useState([]);
+  const [selectedDriverId, setSelectedDriverId] = useState("");
+  
   const [formData, setFormData] = useState({
     destinatario: "",
     rut: "",
@@ -39,6 +48,71 @@ export default function DocumentMaker() {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Cargar destinatarios al montar el componente
+  useEffect(() => {
+    const fetchRecipients = async () => {
+      try {
+        const response = await fetch(getApiUrl("/api/recipients"));
+        if (response.ok) {
+          const data = await response.json();
+          setRecipients(data);
+        }
+      } catch (error) {
+        console.error("Error al cargar destinatarios:", error);
+      }
+    };
+    
+    fetchRecipients();
+  }, []);
+
+  // Cargar choferes al montar el componente
+  useEffect(() => {
+    const fetchDrivers = async () => {
+      try {
+        const response = await fetch(getApiUrl("/api/drivers"));
+        if (response.ok) {
+          const data = await response.json();
+          setDrivers(data);
+        }
+      } catch (error) {
+        console.error("Error al cargar choferes:", error);
+      }
+    };
+    
+    fetchDrivers();
+  }, []);
+
+  // Autocompletar datos cuando se selecciona un destinatario
+  useEffect(() => {
+    if (selectedRecipientId) {
+      const recipient = recipients.find(r => r._id === selectedRecipientId);
+      if (recipient) {
+        setFormData(prev => ({
+          ...prev,
+          destinatario: recipient.destinatario,
+          rut: recipient.rut,
+          giro: recipient.giro,
+          direccion: recipient.direccion,
+          ciudadDestinatario: recipient.ciudad
+        }));
+      }
+    }
+  }, [selectedRecipientId, recipients]);
+
+  // Autocompletar datos cuando se selecciona un chofer
+  useEffect(() => {
+    if (selectedDriverId) {
+      const driver = drivers.find(d => d._id === selectedDriverId);
+      if (driver) {
+        setFormData(prev => ({
+          ...prev,
+          chofer: driver.chofer,
+          rutChofer: driver.rutChofer
+        }));
+      }
+    }
+  }, [selectedDriverId, drivers]);
 
   // Manejar cambios en los inputs
   const handleChange = (e) => {
@@ -167,6 +241,40 @@ export default function DocumentMaker() {
           <fieldset style={styles.fieldset}>
             <legend style={styles.legend}>📍 Información del Destinatario</legend>
             
+            {/* Selector de destinatario */}
+            <div style={styles.formGroup}>
+              <label htmlFor="recipientSelect" style={styles.label}>
+                Seleccionar Destinatario
+              </label>
+              <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+                <select
+                  id="recipientSelect"
+                  value={selectedRecipientId}
+                  onChange={(e) => setSelectedRecipientId(e.target.value)}
+                  style={{ ...styles.input, flex: 1 }}
+                >
+                  <option value="">-- Seleccionar destinatario existente --</option>
+                  {recipients.map(r => (
+                    <option key={r._id} value={r._id}>
+                      {r.destinatario} — {r.rut}
+                    </option>
+                  ))}
+                </select>
+                <Link 
+                  to="/recipients" 
+                  style={styles.addRecipientButton}
+                  title="Administrar destinatarios"
+                >
+                  ⚙️ Administrar
+                </Link>
+              </div>
+              <small style={{ color: "#666", fontSize: "0.85rem", marginTop: "4px" }}>
+                💡 Selecciona un destinatario existente o completa los campos manualmente
+              </small>
+            </div>
+
+            <hr style={{ border: "none", borderTop: "1px solid #ddd", margin: "15px 0" }} />
+            
             <div style={styles.formGroup}>
               <label htmlFor="destinatario" style={styles.label}>
                 Destinatario *
@@ -252,6 +360,40 @@ export default function DocumentMaker() {
           {/* Sección Transporte */}
           <fieldset style={styles.fieldset}>
             <legend style={styles.legend}>🚚 Información del Transporte</legend>
+
+            {/* Selector de chofer */}
+            <div style={styles.formGroup}>
+              <label htmlFor="driverSelect" style={styles.label}>
+                Seleccionar Chofer
+              </label>
+              <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+                <select
+                  id="driverSelect"
+                  value={selectedDriverId}
+                  onChange={(e) => setSelectedDriverId(e.target.value)}
+                  style={{ ...styles.input, flex: 1 }}
+                >
+                  <option value="">-- Seleccionar chofer existente --</option>
+                  {drivers.map(d => (
+                    <option key={d._id} value={d._id}>
+                      {d.chofer} — {d.rutChofer}
+                    </option>
+                  ))}
+                </select>
+                <Link 
+                  to="/drivers" 
+                  style={styles.addRecipientButton}
+                  title="Administrar choferes"
+                >
+                  ⚙️ Administrar
+                </Link>
+              </div>
+              <small style={{ color: "#666", fontSize: "0.85rem", marginTop: "4px" }}>
+                💡 Selecciona un chofer existente o completa los campos manualmente
+              </small>
+            </div>
+
+            <hr style={{ border: "none", borderTop: "1px solid #ddd", margin: "15px 0" }} />
 
             <div style={styles.formRow}>
               <div style={styles.formGroup}>
@@ -598,6 +740,17 @@ const styles = {
     outline: "none",
     transition: "border-color 0.3s",
     fontFamily: "inherit"
+  },
+  addRecipientButton: {
+    padding: "12px 16px",
+    backgroundColor: "#28a745",
+    color: "white",
+    textDecoration: "none",
+    borderRadius: "8px",
+    fontWeight: "600",
+    fontSize: "0.9rem",
+    whiteSpace: "nowrap",
+    display: "inline-block",
   },
   submitButton: {
     padding: "16px 32px",

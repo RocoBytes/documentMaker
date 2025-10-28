@@ -4,6 +4,8 @@ import DocumentsList from "./pages/DocumentsList";
 import DocumentDetail from "./pages/DocumentDetail";
 import DocumentPrint from "./pages/DocumentPrint";
 import LogoUpload from "./pages/LogoUpload";
+import RecipientList from "./pages/RecipientList";
+import DriverList from "./pages/DriverList";
 
 export default function App() {
   return (
@@ -23,6 +25,12 @@ export default function App() {
         
         {/* Vista de impresión especializada */}
         <Route path="/documents/:id/print" element={<DocumentPrint />} />
+        
+        {/* Administración de destinatarios */}
+        <Route path="/recipients" element={<RecipientList />} />
+        
+        {/* Administración de choferes */}
+        <Route path="/drivers" element={<DriverList />} />
         
         {/* Administrador de logo */}
         <Route path="/admin/logo" element={<LogoUpload />} />
